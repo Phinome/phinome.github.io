@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>初识Promise | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="初识Promise为啥要用Promise？考虑一个栗子：读取一个文件，然后将内容解析为 JSON。Javascript 代码如下：
+function readJSONSync(filename) {
+      return JSON.parse(fs.readFileSync(filename, &apos;utf8&apos;));
+}
+上面这段代码中，由于读取文件采用的是同步的方式，将会阻塞其他的操作，直到文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识Promise">
+<meta property="og:url" content="http://blog.supertree.me/2014/12/14/初识Promise/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="初识Promise为啥要用Promise？考虑一个栗子：读取一个文件，然后将内容解析为 JSON。Javascript 代码如下：
+function readJSONSync(filename) {
+      return JSON.parse(fs.readFileSync(filename, &apos;utf8&apos;));
+}
+上面这段代码中，由于读取文件采用的是同步的方式，将会阻塞其他的操作，直到文件">
+<meta property="og:updated_time" content="2015-06-03T13:57:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识Promise">
+<meta name="twitter:description" content="初识Promise为啥要用Promise？考虑一个栗子：读取一个文件，然后将内容解析为 JSON。Javascript 代码如下：
+function readJSONSync(filename) {
+      return JSON.parse(fs.readFileSync(filename, &apos;utf8&apos;));
+}
+上面这段代码中，由于读取文件采用的是同步的方式，将会阻塞其他的操作，直到文件">
+  
+    <link rel="alternative" href="/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="null" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">phinome</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">supertree.me</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/2014/" style="font-size: 10px;">2014</a> <a href="/tags/Object-c/" style="font-size: 10px;">Object-c</a> <a href="/tags/Promise/" style="font-size: 20px;">Promise</a> <a href="/tags/RAP/" style="font-size: 20px;">RAP</a> <a href="/tags/Sass/" style="font-size: 10px;">Sass</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/compass/" style="font-size: 10px;">compass</a> <a href="/tags/deferred/" style="font-size: 10px;">deferred</a> <a href="/tags/devTools/" style="font-size: 10px;">devTools</a> <a href="/tags/echarts/" style="font-size: 10px;">echarts</a> <a href="/tags/es6/" style="font-size: 20px;">es6</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/个人小结/" style="font-size: 10px;">个人小结</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感悟/" style="font-size: 20px;">感悟</a> <a href="/tags/漫谈/" style="font-size: 10px;">漫谈</a> <a href="/tags/生活/" style="font-size: 10px;">生活</a> <a href="/tags/程序人生/" style="font-size: 10px;">程序人生</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/项目总结/" style="font-size: 10px;">项目总结</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">phinome</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="null" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">phinome</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">supertree.me</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-初识Promise" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/12/14/初识Promise/" class="article-date">
+  	<time datetime="2014-12-14T15:51:06.000Z" itemprop="datePublished">Dec 14 2014</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      初识Promise
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Promise/">Promise</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es6/">es6</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Promise/">Promise</a><a class="article-category-link" href="/categories/Promise/es6/">es6</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="初识Promise">初识Promise</h1><h3 id="为啥要用Promise？">为啥要用Promise？</h3><p>考虑一个栗子：读取一个文件，然后将内容解析为 JSON。Javascript 代码如下：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSONSync</span>(<span class="params">filename</span>) </span>{
+      <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(fs.readFileSync(filename, <span class="string">'utf8'</span>));
+}
+</code></pre><p>上面这段代码中，由于读取文件采用的是同步的方式，将会阻塞其他的操作，直到文件读取完毕，而现实中，我们显然不希望是这样的结果，因此，通常我们都采取异步地方式：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span><span class="params">(filename, callback)</span></span>{
+      fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err, res)</span></span>{
+        <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="keyword">callback</span>(err);
+        <span class="keyword">callback</span>(<span class="literal">null</span>, JSON.parse(res));
+      });
+}
+</code></pre><p>上面这段代码，咋一看似乎一切都很完美，通过异步调用IO完美解决了阻塞的问题，然而，细细思考却发现：</p>
+<p>1.参数中的 callback ，这货到底是输入的参数还是返回的值呢？</p>
+<p>2.原有的控制流程不再起作用了；</p>
+<p>3.JSON.parse 没有抛出错误；</p>
+<a id="more"></a>
+<p>OK，既然上面的代码以上这些问题，那么，我们尝试来解决 JSON.parse 没有抛出错误的问题，代码如下：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span><span class="params">(filename, callback)</span></span>{
+      fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err, res)</span></span>{
+        <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="keyword">callback</span>(err);
+        <span class="keyword">try</span> {
+              res = JSON.parse(res);
+        } <span class="keyword">catch</span> (ex) {
+              <span class="keyword">return</span> <span class="keyword">callback</span>(ex);
+        }
+        <span class="keyword">callback</span>(<span class="literal">null</span>, res);
+      });
+}
+</code></pre><p>Oh…，这看上去似乎也不错，至少把 JSON.parse 可能出错抛出来了。额，可是这略显混乱的代码，似乎也不太清晰吧，况且还是没有解决 ”callback“ 这个看上去似乎又是参数又是返回值的问题。</p>
+<p>那，问题来了，挖掘机。。。哦，这不是蓝翔，是 Promise。</p>
+<p>Wow~ Promise 出场了，它能帮你解决以上的问题，同时写出结构清晰的代码。</p>
+<p>老规矩，首先介绍一下 Promise 是何方神圣？</p>
+<blockquote>
+<p>promise 表示一个异步操作的最终结果。与 promise 进行交互的主要方式是通过 then 方法，该方法注册了两个回调函数，用于接受 promise 的最终结果或者 promise 的据因。（原文传送门：<a href="http://promisesaplus.com/" target="_blank" rel="external">http://promisesaplus.com/</a>）</p>
+</blockquote>
+<p>这是官方的说法，但是我还是更喜欢张鑫旭的说法。</p>
+<blockquote>
+<p>OK，首先第1点，Promise是一种形式。</p>
+<p>注意这里的措辞，“Promise是一种形式”，也就是不要把Promise看成是某些方法、函数之类的。类似于不要把“小姐”看成某个人，而是某种职业。</p>
+<p>Promise中文有“誓言”、“承诺”之意。从字面意思我们也似乎体会出一点“形式”的味道。但是，注意这里的转折，根据自己的理解，Promise完全不能按照“承诺”来理解，而是要根据其音译——“普罗米修斯”。普罗米修斯是希腊神话故事中的英雄，名字的意思是“先知”。Promise最初的命名是Futures, “未来”，可见Promise含义不是字面的“誓言”“承诺”之类，而是“先知”“未来”的意思。<a href="From http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/">传送门</a></p>
+</blockquote>
+<p>Promise 是一种形式，而不是函数或方法，当然就更不是类了。Of course ，一千个读者一千个哈姆雷特，你不是这样理解的，我也不会去咬你。扯淡就到此为止。</p>
+<p>刚才说了 Promise 是一种形式，一种解决复杂异步操作的方式，那么这种方式又有哪些内容呢？</p>
+<p>首先，不得不说的是其三种状态（Other：报告，不是说还有第四种状态么？传送门：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise</a> ，Author：别逼逼）：</p>
+<ul>
+<li>pending: initial state, not fulfilled or rejected.</li>
+<li>fulfilled: successful operation</li>
+<li>rejected: failed operation.</li>
+</ul>
+<p>上面这几个状态的英文就不用我翻译了吧。关于以上这几个状态的转化，这片文章里就不多说了，只需要记住一点：一旦一个 Promise 处于 fulfilled 状态或者 rejected 状态，就再也不能转化为其它状态了。</p>
+<p>好了，以上说了这么多，估计你都看烦了吧？（没看够，本文也没多余的介绍了）。那么，我们就用 promise 这种方式来将之前的代码改造一下。一起来瞅瞅，这货真的有那么神奇么？</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readFile</span>(<span class="params">filename, enc</span>)</span>{
+      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">fulfill, reject</span>)</span>{
+        fs.readFile(filename, enc, <span class="function"><span class="keyword">function</span> (<span class="params">err, res</span>)</span>{
+              <span class="keyword">if</span> (err) reject(err);
+              <span class="keyword">else</span> fulfill(res);
+        });
+      });
+}
+</code></pre><p>（Person：咦，噢，Wow~，看上去好像很不错的样子，草莓味么？）</p>
+<p>额，忽略上面一段。。。。，通过上面的代码，结合上面说的三个状态，可以看出，如果 promise 变为 fulfilled 状态，那么就表示目标达成，此时直接 fulfill ( res ) 就好了，反之，则是目标没有达成，那么，直接 rejected ( err ) 也就好了，这一切看起来是不是很熟悉啊~此处应有拍桌~这TM，不是我们正常处理事务的方式么？目标达成就高高兴兴地执行下面的事儿，反之，悲剧了再努力努力咯。</p>
+<p>Person：咦，谁知道 promise 的状态转换为 fulfilled 或 rejected 了呢？</p>
+<p>promise.done 咯，当 promise 完成状态转换后，会调用 promise.done ，按照这个思路来重写刚才的 readJSON 方法：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>{
+      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">fulfill, reject</span>)</span>{
+        readFile(filename, <span class="string">'utf8'</span>).done(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>)</span>{
+              <span class="keyword">try</span> {
+                fulfill(<span class="built_in">JSON</span>.parse(res));
+              } <span class="keyword">catch</span> (ex) {
+                reject(ex);
+              }
+        }, reject);
+      });
+}
+</code></pre><p>当然以上这段代码，还是有一些可以改进的地方，至于是啥，我不告诉你。</p>
+<p>此处有注意：(自己看英文，我比较懒，就不翻译了。)</p>
+<blockquote>
+<p>Non Standard</p>
+<p>Note that promise.done (used in the examples in this section) has not been standardised. It is supported by most major promise libraries though, and is useful both as a teaching aid and in production code. I recommend using it along with the following polyfill (minified / unminified):</p>
+<p><code>&lt;script src=&quot;https://www.promisejs.org/polyfills/promise-done-6.0.0.min.js&quot;&gt;&lt;/script&gt;</code>    </p>
+</blockquote>
+<p>Person：咦。。。就这点货？</p>
+<p>猴急个啥，马上上菜。</p>
+<h3 id="Transformation_/_Chaining">Transformation / Chaining</h3><p>老规矩，不翻译，你爱咋理解，咋理解。</p>
+<p>使用过 jQuery 的都知道，jQuery 里有一个很棒的方式：链式调用。接着刚才那个 readJSON 例子，那段代码中 readFile.done 其实是个同步操作，那么我们能把它转换为异步操作么？Of course，promise 规范里就有一个 then 方法，用来传递 promise 并提供链式操作。</p>
+<p>那么，我们用 then 方法来重写上面的那个例子：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>{
+      <span class="keyword">return</span> readFile(filename, <span class="string">'utf8'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>)</span>{
+        <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(res)
+      })
+}
+</code></pre><p>既然 JSON.parse === ‘function’ ， 那么还可以这样写：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>{
+      <span class="keyword">return</span> readFile(filename, <span class="string">'utf8'</span>).then(<span class="built_in">JSON</span>.parse);
+}
+</code></pre><p>咳咳~就到这儿吧。至于具体的实现，请直接看下面的参考资料吧。</p>
+<p><em>参看文章：</em></p>
+<ol>
+<li><p>Specification [ <a href="https://promisesaplus.com/" target="_blank" rel="external">https://promisesaplus.com/</a> ]</p>
+</li>
+<li><p>Promise From Mozilla [ <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise</a> ]</p>
+</li>
+<li><p>ES6 JavaScript Promise的感性认知 [ <a href="http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/" target="_blank" rel="external">http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/</a> ]</p>
+</li>
+<li><p>Promises [ <a href="https://www.promisejs.org/" target="_blank" rel="external">https://www.promisejs.org/</a> ]</p>
+</li>
+</ol>
+<p><em>具体实现：</em></p>
+<ol>
+<li><p>Q [ <a href="http://documentup.com/kriskowal/q/" target="_blank" rel="external">http://documentup.com/kriskowal/q/</a> ]</p>
+</li>
+<li><p>promise [ <a href="https://github.com/then/promise" target="_blank" rel="external">https://github.com/then/promise</a> ]</p>
+</li>
+<li><p>when [ <a href="https://github.com/cujojs/when" target="_blank" rel="external">https://github.com/cujojs/when</a> ]</p>
+</li>
+</ol>
+<p>还有其他欢迎你告诉我，感谢~</p>
+<p>—- EOF —-</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/12/17/More-about-Promise/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          jQuery 中的 Promise
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/10/13/chrome-devTools-notes/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">chrome-devTools-notes</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="初识Promise" data-title="初识Promise" data-url="http://blog.supertree.me/2014/12/14/初识Promise/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 phinome
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

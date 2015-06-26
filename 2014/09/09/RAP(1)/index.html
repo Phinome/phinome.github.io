@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RAP（1） | Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么是RAP?
+在前后端分离的开发模式下，我们通常需要定义一份接口文档来规范接口的具体信息。如一个请求的地址、有几个参数、参数名称及类型含义等等。RAP 首先方便团队录入、查看和管理这些接口文档，并通过分析结构化的文档数据，重复利用并生成自测数据、提供自测控制台等等… 大幅度提升开发效率。
+from https://github.com/thx/RAP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAP（1）">
+<meta property="og:url" content="http://blog.supertree.me/2014/09/09/RAP(1)/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="什么是RAP?
+在前后端分离的开发模式下，我们通常需要定义一份接口文档来规范接口的具体信息。如一个请求的地址、有几个参数、参数名称及类型含义等等。RAP 首先方便团队录入、查看和管理这些接口文档，并通过分析结构化的文档数据，重复利用并生成自测数据、提供自测控制台等等… 大幅度提升开发效率。
+from https://github.com/thx/RAP">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6e360ed5jw1ek6iltokntj21hk0u0wn7.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/6e360ed5jw1ek6ilil3ptj20gt0elgoj.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/6e360ed5jw1ek6il8fhsvj20n8095q4z.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/6e360ed5jw1ek6ikndd5rj21hk0u0ait.jpg">
+<meta property="og:updated_time" content="2015-06-03T13:57:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RAP（1）">
+<meta name="twitter:description" content="什么是RAP?
+在前后端分离的开发模式下，我们通常需要定义一份接口文档来规范接口的具体信息。如一个请求的地址、有几个参数、参数名称及类型含义等等。RAP 首先方便团队录入、查看和管理这些接口文档，并通过分析结构化的文档数据，重复利用并生成自测数据、提供自测控制台等等… 大幅度提升开发效率。
+from https://github.com/thx/RAP">
+  
+    <link rel="alternative" href="/atom.xml" title="Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="null" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">phinome</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">supertree.me</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/2014/" style="font-size: 10px;">2014</a> <a href="/tags/Object-c/" style="font-size: 10px;">Object-c</a> <a href="/tags/Promise/" style="font-size: 20px;">Promise</a> <a href="/tags/RAP/" style="font-size: 20px;">RAP</a> <a href="/tags/Sass/" style="font-size: 10px;">Sass</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/compass/" style="font-size: 10px;">compass</a> <a href="/tags/deferred/" style="font-size: 10px;">deferred</a> <a href="/tags/devTools/" style="font-size: 10px;">devTools</a> <a href="/tags/echarts/" style="font-size: 10px;">echarts</a> <a href="/tags/es6/" style="font-size: 20px;">es6</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/个人小结/" style="font-size: 10px;">个人小结</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感悟/" style="font-size: 20px;">感悟</a> <a href="/tags/漫谈/" style="font-size: 10px;">漫谈</a> <a href="/tags/生活/" style="font-size: 10px;">生活</a> <a href="/tags/程序人生/" style="font-size: 10px;">程序人生</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/项目总结/" style="font-size: 10px;">项目总结</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">phinome</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="null" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">phinome</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">supertree.me</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-RAP(1)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/09/09/RAP(1)/" class="article-date">
+  	<time datetime="2014-09-09T11:33:53.000Z" itemprop="datePublished">Sep 9 2014</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RAP（1）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RAP/">RAP</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/RAP/">RAP</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<h3 id="什么是RAP?">什么是RAP?</h3></blockquote>
+<p>在前后端分离的开发模式下，我们通常需要定义一份接口文档来规范接口的具体信息。如一个请求的地址、有几个参数、参数名称及类型含义等等。RAP 首先方便团队录入、查看和管理这些接口文档，并通过分析结构化的文档数据，重复利用并生成自测数据、提供自测控制台等等… 大幅度提升开发效率。</p>
+<p>from <a href="https://github.com/thx/RAP" target="_blank" rel="external">https://github.com/thx/RAP</a><br><a id="more"></a></p>
+<h3 id="RAP部署记（一）">RAP部署记（一）</h3><p>工作中常常遇到这样的情况，一个需求，前后端配合着开发，其中，按照正常的开发流程，需求确定后，FE和RD的就会坐在一起，讨论前后端接口的定义和数据格式，然后一番存枪舌战后，终于有了一个双方都比较“满意”的方案了，欧耶，似乎这样就可以轻松、幸福地写码了。</p>
+<p>一开始，我也这样认为，但是渐渐地，我发现虽然接口和数据格式后端提供了，但是数据从哪儿来，按照之前的开发套路，RD会提供给我，我也就“心安理得”的等着，可是等着等着，结果却似乎朝着延期的方向发展着。呵呵。。。PM来了。（此处省略），没法，再次和RD沟通，希望他能提供模拟数据，但是事实是，RD很忙的，有很多事儿等着RD的解决，即使花费时间产出模拟数据，不仅量少，而且还会造成其它事项处理延期，呜呜。那就自己动手，丰衣足食吧，想起之前老大说过的淘宝已经产出这样的产品，还有拿来主义。</p>
+<p>然后就有此文了。</p>
+<p>首先就是部署这个服务（软件？），文档里有详细的说明，我就不多说了，我只记载一下用 Eclipse （文档中用的是 Myeclipse）部署时遇到的一些问题。</p>
+<blockquote>
+<p>部署文档 From <a href="http://thx.github.io/RAP/resources/RAP-deploy/" target="_blank" rel="external">http://thx.github.io/RAP/resources/RAP-deploy/</a></p>
+</blockquote>
+<p>首先就是 Myeclipse 项目导入 Eclipse 的问题，话说好歹大学里也学习过 Javaee ，结果打开 eclipse 时，只能表示傻眼了，一句话就是显示器上飘来三个字：看不懂。没辙，求教一下高手吧，请教了一下后端的同事，同事指点，道：“先导入 Myeclipse 项目，然后可以新建一个 eclipse 项目，然后 diff ，看看那些不同，然后按照 eclipse 项目的结构将 Myeclipse 项目的文件放入相应的目录就可。”（能有简单的办法么？没法，个人就是比较懒。。。。）</p>
+<p>听完同事的建议后，“额，先搁浅吧，还有其他重要的事儿要做。”。</p>
+<p>搁浅几天后，今天在网上找了一下资料，发现 Myeclipse 项目不用那么麻烦就可以转为 eclipse 项目，呵呵。。。</p>
+<p>解决办法:</p>
+<pre><code>1. 修改项目的.project文件，保存，不需要重启Eclipse。
+
+在
+    <span class="tag">&lt;<span class="title">natures</span>&gt;</span>
+     …
+      <span class="tag">&lt;/<span class="title">natures</span>&gt;</span>
+
+之间添加下列三行配置
+
+<span class="tag">&lt;<span class="title">nature</span>&gt;</span>org.eclipse.wst.common.project.facet.core.nature<span class="tag">&lt;/<span class="title">nature</span>&gt;</span>
+<span class="tag">&lt;<span class="title">nature</span>&gt;</span>org.eclipse.wst.common.modulecore.ModuleCoreNature<span class="tag">&lt;/<span class="title">nature</span>&gt;</span>
+<span class="tag">&lt;<span class="title">nature</span>&gt;</span>org.eclipse.jem.workbench.JavaEMFNature<span class="tag">&lt;/<span class="title">nature</span>&gt;</span>
+
+保险起见,在使用的Eclispe中创建一个新的web项目,用此空项目的.project文件覆盖导入的Web项目的.project文件
+
+2. 在Eclipse中打开“project properties"，会看到新增了很多选择项，点中"Project Facets"：
+
+勾选: dynamic web module  和 java 两个选项.
+Apply.
+
+刷新即可.
+</code></pre><p>学会了么？</p>
+<p>终于，工程的问题，被我搞定了，嚯嚯～那就来启动一发吧。结果：</p>
+<p><img src="http://ww1.sinaimg.cn/large/6e360ed5jw1ek6iltokntj21hk0u0wn7.jpg" alt="Error"></p>
+<p>可以看到，urlrewrite.xml 有错误提示，啥情况呢？eclipse 提示这个规则不符合规范，我擦，这不是该有的项都有么？IDE有毛病吧，这样想着的时候突然发现：</p>
+<p><img src="http://ww3.sinaimg.cn/large/6e360ed5jw1ek6ilil3ptj20gt0elgoj.jpg" alt=""><br><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1ek6il8fhsvj20n8095q4z.jpg" alt=""></p>
+<p>额，好吧，貌似看懂了，然后：</p>
+<p><img src="http://ww4.sinaimg.cn/large/6e360ed5jw1ek6ikndd5rj21hk0u0ait.jpg" alt=""></p>
+<p>OK了吧。哈哈～</p>
+<p>今晚就这样吧，改天再说说 eclipse 配置 tomcat server 时遇到的一些问题。</p>
+<p>—-EOF—-</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/09/12/RAP(2)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          RAP(2)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/08/17/读重构(一)/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">读《重构》（一）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="RAP(1)" data-title="RAP（1）" data-url="http://blog.supertree.me/2014/09/09/RAP(1)/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 phinome
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

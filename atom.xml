@@ -1,0 +1,1245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  
+  <title><![CDATA[Blog]]></title>
+  <subtitle><![CDATA[supertree.me]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://blog.supertree.me//"/>
+  <updated>2015-06-26T14:16:41.000Z</updated>
+  <id>http://blog.supertree.me//</id>
+  
+  <author>
+    <name><![CDATA[phinome]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[项目总结（一）]]></title>
+    <link href="http://blog.supertree.me/2015/06/26/%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://blog.supertree.me/2015/06/26/项目总结（一）/</id>
+    <published>2015-06-26T12:09:41.000Z</published>
+    <updated>2015-06-26T14:16:41.000Z</updated>
+    <content type="html"><![CDATA[<p>好久没写东西了，感觉文字越来越陌生了，code越来越熟悉了。有种脱离文字的感觉，蹭着还没不可救药，今天就写点东西吧。</p>
+<p>R;T，既然是项目总结，那主题也很明确，不会涉及其他方面的扯蛋。不过首先声明，因为涉及内部项目，所以显然下面会出现各种代名词，因此，不用追问啥。给你机会发挥想象。</p>
+<p>一开始接到这个项目的时候，沿着固定的思维来思考，不过又是一个重复，不过这次要略高级那么一丢丢，呵呵～直到被产品原型惊呆了，也才缓过来，顿觉这个东西不一般，就冲着PM这份儿认真劲儿，我也感觉像打了鸡血一般，兴奋不已。blablabla（有点扯多了，一句话就是产品很赞，工作很赞！）</p>
+<p>回到正题，来说说做这个项目中都遇到哪些问题，有哪些思考和实际行动。</p>
+<p>请允许我将时光倒流至项目开天辟地的时候，这时候一片荒芜，毛儿都没有，真没有。然后下意识想的是，利用以前的项目代码，先复制一份来再说。想到就开干了，然后blablabla，OK，<code>grunt default</code> 一切看起来还不错，只是，等等，有个声音在说，这TM就行了？不是说好要开启“装逼模式”么？额，是哦！于是乎，借来了盘古斧，大手一挥，然后旧世界就崩塌了。接着，问题就来了（挖掘机技术…），如何开始创世纪呢？哈哈～一开始就是在为这个问题考虑着，因此，去efe哪儿，参考了项目组织<a href="https://github.com/ecomfe/spec/blob/master/directory.md" target="_blank" rel="external">spec</a>。结合项目实际和自身的理解，开始了新世界的构建之旅。（此处省略若干字），哦可，项目构建好了，基础构建工具没有采用<code>edp</code>，而是继续延续 <code>grunt</code>，至于原因嘛，“项目国情”。</p>
+<p>新世界构建好了，那么来说说为啥要采用新的规则吧。一句话就是为后面的更大的计划做铺垫，至于是啥，就不告诉你。</p>
+<p>原有的项目结构挺好的，按照之前的方式玩儿，一点儿问题都没有，除了个人有些特异感觉外：总觉得有些文件组织不够合理和公共代码提取不够外，其余还真无可挑剔。只是这次希望做出一些改变的主要原因是为了后面的计划做一些前期的试验（当然不够彻底，原因有些多，但风险是主要的），因此，牺牲了已有项目的目录结构，但好的东西留了下来，已有的工作流也留了下来。所以，还不至于会被同事打。</p>
+<p>说完了项目组织和构建，世界已经构建好了，接下来该干啥，都不用思考吧。开干了。于是乎，coding。初级猿类就这样，一遇到项目就瞎激动，没有一个详细的思考和计划，例如，整个项目中代码怎样组织、提取和封装等公共问题。就像一个即将远行的人，啥都还没有准备充分，就开始上路了，结果路上下雨了，发现没带伞，然后就SB了。远行如此，coding也是如此，怀着激动的心情，写了一天，快下班了，发现 bug 了，怎么调都还是有问题，要么就是解决这个问题，就引入新的问题，要么就是压根儿没能解决问题。然后，就陷入sb的论调里了。下面就从CSS 和 JS 的组织来说吧。</p>
+<p>先聊聊 CSS 吧。我相信在大多数人看来，CSS 很简单，只要掌握语法，只管写就行，只要能实现效果就行，其余的就没在意那么多了。不过，一个成熟、稳健和可维护的项目绝逼不能这么干的，前面都说道，这次要开启“装逼模式”，加之第一天写码就遇到bug。这不能忍，因此，开始思考起来CSS代码如何提取和组织的问题起来。</p>
+<p>坏味道的代码：</p>
+<ul>
+<li><p>随意使用 rest css ，结果浏览器被扒光了，也没给你好果子吃。坑到死。。。</p>
+</li>
+<li><p><code>id</code> 与 <code>class</code> 混用，实际开发中应该尽可能避免用 <code>id</code> 来套样式，将 <code>id</code> 作为 <code>javascript</code> 的钩子，可能的话，添加 <code>js-</code>前缀：</p>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"wrap"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"left-wrap"</span> <span class="attribute">id</span>=<span class="value">"lf-wrap"</span>&gt;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"right-wrap"</span>&gt;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="id">#lf-wrap</span> &#123;</span><br><span class="line">	<span class="attribute">float</span>: left;</span><br><span class="line">	....</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class">.right-wrap</span> &#123;</span><br><span class="line">	<span class="attribute">float</span>: right;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多处类似的效果，不提取公共部分，重复代码满天飞。还是以上述的那个例子为例，这样左右固定两列的布局在整个项目中很常见，但只有几项属性有差异。因此，如果每次都写一样的属性，似乎有些浪费。而且整个项目中引入了 <code>less</code> ，因此，除了提取公共的方法外，<code>mixin</code> 就成了不二选择。</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class">.wrap</span>(<span class="variable">@height</span>) &#123;</span><br><span class="line">	<span class="attribute">height</span>: <span class="variable">@height</span>;</span><br><span class="line">	<span class="attribute">line-height</span>: <span class="variable">@height</span>;</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">	<span class="class">.right-wrap</span> &#123;</span><br><span class="line">		<span class="attribute">height</span>: <span class="variable">@height</span>;</span><br><span class="line">		<span class="attribute">line-height</span>: <span class="variable">@height</span>;</span><br><span class="line">	&#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class">.page-a</span> &#123;</span><br><span class="line">	<span class="class">.wrap</span>(<span class="number">2rem</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class">.page-b</span> &#123;</span><br><span class="line">	<span class="class">.wrap</span>(<span class="number">2.5rem</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>开发时不合理组织代码，将所有代码都写在一个文件里，不注意命名，时隔三天，看瞎眼也看不懂这货到底用在哪儿了。</p>
+</li>
+<li><p>只知道写，不注意嵌套层数，后面被样式覆盖坑到哭。</p>
+</li>
+</ul>
+<p>以上就是实际项目中遇到的一些问题、思考和解决方案。还有些，只能呵呵了，记不住了。。。</p>
+<p>接下来似乎应该聊聊 <code>javascript</code> 的组织方式了，但，先卖个关子，第二篇在详细探讨这个问题。</p>
+<p>以上说完了项目代码的组织方式，可项目还是不可避免的延期了。我听见了PM心快碎的声音，哈哈～玩笑，PM也早是造的。</p>
+<p>来说说为啥我们预估的项目时间都大多数不准确吧。</p>
+<p>首先，经验不足，对意料之外，情理之中的事儿严重把握不准确。例如：ui设计这事儿，当然各家不同，因此这仅是一个例子。</p>
+<p>其次，就要说到我们自身的预估了。大部分初中级攻城狮在预估项目排期的时候，都过低预估项目难度，过高预估自身能力和时间安排了。因此，纵使前期通读了整个需求文档，问清了项目需求，结果还是差不多。最终不是延期就是加班做”杯具“。</p>
+<p>最后嘛，算是为自己辩解一下吧。其实，一开始并没有将这个项目放在心上，主要想着只要能尽快完成就好，加之老大也催着，就想着，卧槽，赶紧弄吧，后面再找时间来慢慢改善，能跑起来，完成任务就OK。可是！可是！可是！谁叫要带着一些初心和认真劲儿做呢！结果就是写着，写着遇到问题，不仅仅要考虑这个问题的最简单和直接的解决方案，还要考虑是否有可能还有更好的解决方案，是否需要将代码提取出来重新组织，然后发散开来想，花费时间就不可避免了。后来，几乎一到两个工作日，就会回头想想之前写的代码有哪些与现在写的有类似的，是否可以提取成公共的，是否可以封装起来的等等代码复用方面的问题。然后，想了想，就开始动起手来实践，看实际效果。而这种事儿伴随着开发过程，因此，不仅有了这篇文章，也给项目开发时间带来了延期。至于这件事儿的好与坏，最终归结于时间管理和项目取舍上，至于这个问题的答案，我也已然在心。</p>
+<p>好了，就这么多吧。不知不觉又说了这么多了，下篇详细说说 <code>javascript</code> 方面的一些问题、思考和解决方案。</p>
+<p>Thx!</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>好久没写东西了，感觉文字越来越陌生了，code越来越熟悉了。有种脱离文字的感觉，蹭着还没不可救药，今天就写点东西吧。</p>
+<p>R;T，既然是项目总结，那主题也很明确，不会涉及其他方面的扯蛋。不过首先声明，因为涉及内部项目，所以显然下面会出现各种代名词，因此，不用追问啥]]>
+    </summary>
+    
+      <category term="项目总结" scheme="http://blog.supertree.me/tags/%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="工作" scheme="http://blog.supertree.me/categories/%E5%B7%A5%E4%BD%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[漫谈Echarts]]></title>
+    <link href="http://blog.supertree.me/2015/05/07/%E6%BC%AB%E8%B0%88Echarts/"/>
+    <id>http://blog.supertree.me/2015/05/07/漫谈Echarts/</id>
+    <published>2015-05-07T14:36:59.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>最近项目需要，开始调研echarts，关于echarts早前一直有所关注，也玩过一两个DEMO，但由于没有具体的项目和兴趣点，因此DEMO玩儿过也就搁浅了。而今借着项目这场东风，一边学习，一边瞎侃一下我对于 echarts 的一些认识。</p>
+<p><em>特别说明：既然标题是漫谈，因此这个系列显然不是教程，而纯粹是我个人研究 echarts 过程中的一些认识的记录，当然由于学识的浅薄，可能很多地方很肤浅甚至是问题百出，因此，欢迎批评指正。我也会不时更正。</em></p>
+<p>首先，聊一聊我再次了解echarts的感受。由于之前设计、书写了一个算得上复杂的UI组件，因此再次看到echarts的时候，第一感是：卧槽，这才是软件设计嘛。第二感是：此地有银。看完echarts的简介，echarts的结构图，给我很大的触动。</p>
+<p><img src="http://echarts.baidu.com/doc/asset/img/architecture.png" alt="你们感受一下"></p>
+<p>且不说面向对象设计的单一职责、开放封闭原则，就设计模式而言，这幅图也透露了很多，例如：适配，组合，工厂等模式。小小一张图便透露出如此多的信息，不得不由衷佩服创造其的背后的攻城师们。不服来辩！当然，如果你是web UI组件设计的高手，那就算了。</p>
+<p>惊叹完毕，接着来聊聊，echarts 到底有哪些部分组成。什么？echarts不就是echarts吗！额，echarts还真不全是echarts。如结构图展示的那样，echarts由上层的图类、组件，底层的基础库：zrender组成。其中，zrender是一个轻量级canvas类库，该库MVC核心封装实现图形仓库、视图渲染和交互控制。简单，数据驱动，高效的分层刷新。（分层这儿留个坑）关于echarts的结构就不展开类比了，一看就明白。</p>
+<p>OK，人家的内（jie）在（gou）也看了，现在该对人家负（yin）责（ru）了。那么怎样在项目中引入echarts开始提升逼格之路呢？官方提供了两种方式：（我知道你知道，别闹。。。）一种是官方推荐的AMD化的方式引入，不展开，自行解决；另一种就是针对非AMD，CMD或者其他模块化的方式，甚至是没有模块化的项目，可以将echarts当做普通的第三方JS库，使用标签引入，不过这里有一点要注意：echarts兼容IE6+，在IE8-中采用excanvas实现，而由于excanvas依赖excanvas依赖body标签插入Canvas节点去判断Canvas的支持，如果你把引用echarts的script标签放置head内在IE8-的浏览器中会出现报错，解决的办法就是把标签移动到body内（后）。至于按照AMD的方式引入还可以使用官方提供的echarts-optimizer工具实现压缩合并，我会到处乱说？所以，请自行查看。传送门：<a href="http://echarts.baidu.com/doc/doc.html#自定义构建echarts单文件" target="_blank" rel="external">自定义构建echarts单文件</a></p>
+<p>再谈引入之后，越发觉得echarts的设计之巧妙。</p>
+<p>未完待续。。。。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>最近项目需要，开始调研echarts，关于echarts早前一直有所关注，也玩过一两个DEMO，但由于没有具体的项目和兴趣点，因此DEMO玩儿过也就搁浅了。而今借着项目这场东风，一边学习，一边瞎侃一下我对于 echarts 的一些认识。</p>
+<p><em>特别说明：既然]]>
+    </summary>
+    
+      <category term="echarts" scheme="http://blog.supertree.me/tags/echarts/"/>
+    
+      <category term="漫谈" scheme="http://blog.supertree.me/tags/%E6%BC%AB%E8%B0%88/"/>
+    
+      <category term="漫谈系列" scheme="http://blog.supertree.me/categories/%E6%BC%AB%E8%B0%88%E7%B3%BB%E5%88%97/"/>
+    
+      <category term="echarts" scheme="http://blog.supertree.me/categories/%E6%BC%AB%E8%B0%88%E7%B3%BB%E5%88%97/echarts/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[思想汇报]]></title>
+    <link href="http://blog.supertree.me/2015/04/25/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+    <id>http://blog.supertree.me/2015/04/25/碎碎念/</id>
+    <published>2015-04-25T14:44:47.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>其实这文也是接着说近期的一些感悟，只是不想接着上文说，罢了，故另起一文。</p>
+<p>其实我们这一生都不可避免地与别人比较，在象牙塔里的时候，与同学比较；在家里中，与邻家老王比较；好不容易，出了象牙塔，远离了双亲，这下算是解脱了吧，后来才发现，只要你存在于这个社会里，纵使你的身体不去与人比较，你的心也出卖了你。他无时无刻不在影响着你，你的思考，你的做事，甚至是你的动作。</p>
+<p>呵呵。。。你就要快成为它的奴隶了！</p>
+<p>我们从小就被教导要向优秀的人看齐，努力学习他们，模仿他们，最后能超越最好，不能超越也至少与他们并驾齐驱。于是乎，我们为了周围的人的赞许，我们不顾一切“忘我”地努力着，努力到最后，成功者却寥寥无几，而反观自己，却早已身心疲惫，甚至有些反感这一切。</p>
+<p>我并不否认努力的价值，但是结果却又让我不得不为一个为什么，我们明明已经很努力了！现在，我开始明白了，或许我们只是忘了，我们自身的优势在哪儿，我们自身可深入挖掘的点在哪儿，忽略自身而将他人擅长的，优势的点作为自身努力的目标，最后，如果你不是恰好与其相同，那么，大多数的时候你就会陷入这种“傻比较”的深渊中，成为他的奴隶，看似很努力，但却与成功南辕北辙，甚至劳神伤心。。。因此，人生的定位很重要，选定了方向，就不要再贪慕其他，段时间的切换自己的所选，不是无心就是花心，哈哈~</p>
+<p>SO，SHOW ME YOU POINT! CATCH IT &amp; KEEP HOLD ON</p>
+<p>接下来聊聊另一个话题，有局戏语：“懒人推动了这个世界的发展”。嗯嗯，我勒个去，简直不能赞同更多。现在再来回味这句话，也只能对自己呵呵了。别人的懒惰都是积极属性的，而自己的懒惰更多的是消极属性。两者处在零点的两端。为啥要说懒惰呢？因为最近自己做饭吃，在厨房中，烹饪中，体会，学到了一些道理。在平时的工作中，总是想着这问题能糊弄过去最好了，精益求精啥的，有啥好做的，反正又不影响使用，带着这种思想到了厨房中，天啦撸！该自己尝尝苦果了。有一次做包菜炒腊肠，因为掰了许多叶子，洗起来比较费事儿，细细地洗了约1/3，就想着，反正要下锅，无所谓了。结果，那晚吃了就杯具了。。。。从此，不含糊。而反射到工作中，我开始思考如何之前所犯下的问题，有一些只需要有一颗不含糊的心，就能解决；另外一些却不仅需要心，还需要经验和智慧。额，此刻没啥可说的，行动证明。</p>
+<p>来个总结性的结尾吧。</p>
+<ol>
+<li><p>与其疲于各种不切自身实际的比较中，不如潜心磨好自己一枚杵。</p>
+</li>
+<li><p>糊弄的苦果终究地自己品尝。不含糊才是好的开始。</p>
+</li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>其实这文也是接着说近期的一些感悟，只是不想接着上文说，罢了，故另起一文。</p>
+<p>其实我们这一生都不可避免地与别人比较，在象牙塔里的时候，与同学比较；在家里中，与邻家老王比较；好不容易，出了象牙塔，远离了双亲，这下算是解脱了吧，后来才发现，只要你存在于这个社会里，纵使]]>
+    </summary>
+    
+      <category term="生活" scheme="http://blog.supertree.me/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="生活" scheme="http://blog.supertree.me/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[程序设计杂谈--转载]]></title>
+    <link href="http://blog.supertree.me/2015/04/21/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E6%9D%82%E8%B0%88--%E8%BD%AC%E8%BD%BD/"/>
+    <id>http://blog.supertree.me/2015/04/21/程序设计杂谈--转载/</id>
+    <published>2015-04-21T15:34:11.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>首先申明，本文转自公众账号《程序人生》，若原作者认为此转载侵犯您的权益，请联系我撤掉。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz/SER9L29WQ09LdatCIcWsnC7ysaK8dhiccaF7iaoPUe5wJt8FtE2DQPYsNWpOAKEuAPH5vLxl7fevDibCsBkr8BhSA/640?tp=webp&amp;wxfrom=5" alt="http://mmbiz.qpic.cn/mmbiz/SER9L29WQ09LdatCIcWsnC7ysaK8dhiccaF7iaoPUe5wJt8FtE2DQPYsNWpOAKEuAPH5vLxl7fevDibCsBkr8BhSA/640?tp=webp&amp;wxfrom=5"></p>
+<p>disclaimer: 本文所讲的设计，非UI/UE的设计，单单指软件代码/功能本身在技术上的设计。UI/UE的主题请出门右转找特赞（Tezign）。:)</p>
+<p>在如今这个Lean/Agile横扫一切的年代，设计似乎有了被边缘化的倾向，做事的周期如此之快，似乎已容不下人们更多的思考。MVP（Minimal Viable Produce）在很多团队里演化成一个形而上的图腾，于是工程师们找到了一个完美的借口：我先做个MVP，设计的事，以后再说。</p>
+<p>如果纯属个人玩票，有个点子，hack out还说得过去；但要严肃做一个项目，还是要下工夫设计一番，否则，没完没了的返工会让你无语泪千行。</p>
+<h2 id="设计首先得搞懂要解决的问题">设计首先得搞懂要解决的问题</h2><p>工程师大多都是很聪明的人，聪明人有个最大的问题就是自负。很多人拿到一个需求，还没太搞明白其外延和内涵，代码就已经在脑袋里流转。这样做出来的系统，纵使再精妙，也免不了承受因需求理解不明确而导致的返工之苦。</p>
+<p>搞懂需求这事，说起来简单，做起来难。需求有正确的但表达错误的需求，有正确的但没表达出来的需求，还有过度表达的需求。所以，拿到需求后，先不忙寻找解决方案，多问问自己，工作伙伴，客户follow up questions来澄清需求模糊不清之处。</p>
+<p>搞懂需求，还需要了解需求对应的产品，公司，以及（潜在）竞争对手的现状，需求的上下文，以及需求的约束条件。人有二知二不知：</p>
+<ol>
+<li><p>I know that I know</p>
+</li>
+<li><p>I know that I don’t know</p>
+</li>
+<li><p>I don’t know that I know</p>
+</li>
+<li><p>I don’t know that I don’t know</p>
+</li>
+</ol>
+<p>澄清需求的过程，就是不断驱逐无知，掌握现状，上下文和约束条件的过程。</p>
+<p>这个主题讲起来很大，且非常重要，但毕竟不是本文的重点，所以就此带过。</p>
+<h2 id="寻找（多个）解决方案">寻找（多个）解决方案</h2><p>如果对问题已经有不错的把握，接下来就是解决方案的发现之旅。这是个考察big picture的活计。同样是满足孩子想要个汽车的愿望，你可以：</p>
+<p>a. 去玩具店里买一个现成的</p>
+<p>b. 买乐高积木，然后组装</p>
+<p>c. 用纸糊一个，或者找块木头，刻一个</p>
+<p>这对应软件工程问题的几种解决之道：</p>
+<p>a. 购买现成软件（acuquire or licensing），二次开发之（如果需要）</p>
+<p>b. 寻找building blocks，组装之（glue）</p>
+<p>c. 自己开发（build from scratch, or DIY）</p>
+<p>大部分时候，如果a或b的TCO [1] 合理，那就不要选择c。做一个产品的目的是为客户提供某种服务，而不是证明自己能一行行码出出来这个产品。</p>
+<p>a是个很重要的点，可惜大部分工程师脑袋里没有钱的概念，或者出于job security的私心，而忽略了。工程师现在越来越贵，能用合理的价格搞定的功能，就不该雇人去打理（自己打脸）。一个产品，最核心的部分不超过整个系统的20%，把人力资源铺在核心的部分，才是软件设计之道。</p>
+<p>b我们稍后再讲。</p>
+<p>对工程师而言，DIY出一个功能是个极大的诱惑。一种DIY是源自工程师的不满。任何开源软件，在处理某种特定业务逻辑的时候总会有一些不足，眼里如果把这些不足放在，却忽略了人家的好处，是大大的不妥。前两天我听到有人说 “consul sucks, …, I’ll build our own service discovery framework…”，我就苦笑。我相信他能做出来一个简单的service discovery tool，这不是件特别困难的事情。问题是值不值得去做。如果连处于consul这个层次的基础组件都要自己去做，那要么是心太大，要么是没有定义好自己的软件系统的核心价值（除非系统的核心价值就在于此）。代码一旦写出来，无论是5000行还是50行，都是需要有人去维护的，在系统的生命周期里，每一行自己写的代码都是一笔债务，需要定期不定期地偿还利息。</p>
+<p>另外一种DIY是出于工程师的无知。「无知者无畏」在某些场合的效果是正向的，有利于打破陈规。但在软件开发上，还是知识和眼界越丰富越开阔越好。一个无知的工程师在面对某个问题时（比如说service discovery），如果不知道这问题也许有现成的解决方案（consul），自己铆足了劲写一个，大半会有失偏颇（比如说没做上游服务的health check，或者自己本身的high availability），结果bug不断，辛辛苦苦一个个都啃下来，才发现，自己走了很多弯路，费了大半天劲，做了某个开源软件的功能的子集。当然，对工程师而言，这个练手的价值还是很大的，但对公司来说，这是一笔沉重的无意义的支出。</p>
+<p>眼界定义了一个人的高度，如果你每天见同类的人，看同质的书籍/视频，（读）写隶属同一domain的代码，那多半眼界不够开阔。互联网的发展一日千里，变化太快，如果把自己禁锢在一方小天地里，很容易成为陶渊明笔下的桃花源中人：乃不知有汉，无论魏晋。</p>
+<h2 id="构建灵活且有韧性的系统">构建灵活且有韧性的系统</h2><p>如果说之前说的都是废话，那么接下来的和真正的软件设计能扯上些关系。</p>
+<h3 id="分解和组合">分解和组合</h3><p>软件设计是一个把大的问题不断分解，直至原子级的小问题，然后再不断组合的过程。这一点可以类比生物学：原子（keyword/macro）组合成分子（function），分子组合成细胞（module/class），细胞组合成组织（micro service），组织组合成器官（service），进而组合成生物（system）。</p>
+<p>一个如此组合而成系统，是满足关注点分离（Separation of Concerns）的。大到一个器官，小到一个细胞，都各司其职，把自己要做的事情做到极致。心脏不必关心肾脏会干什么，它只需要做好自己的事情：把新鲜血液通过动脉排出，再把各个器官用过的血液从静脉回收。</p>
+<p>分解和组合在软件设计中的作用如此重要，以至于一个系统如果合理分解，那么日后维护的代价就要小得多。同样讲关注点分离，不同的工程师，分离的方式可能完全不同。但究其根本，还有有一些规律可循。</p>
+<h3 id="总线（System_Bus）">总线（System Bus）</h3><p>首先我们要把系统的总线定义出来。人体的总线，大的有几条：血管（动脉，静脉），神经网络，气管，输尿管。它们有的完全负责与外界的交互（气管，输尿管），有的完全是内部的信息中枢（血管），有的内外兼修（神经网络）。</p>
+<p>总线把生产者和消费者分离，让彼此互不依赖。心脏往外供血时，把血压入动脉血管就是了。它并不需要知道谁是接收者。</p>
+<p>同样的，回到我们熟悉的计算机系统，CPU访问内存也是如此：它发送一条消息给总线，总线通知RAM读取数据，然后RAM把数据返回给总线，CPU再获取之。整个过程中CPU只知道一个内存地址，毋须知道访问的具体是哪个内存槽的哪块内存 —— 总线将二者屏蔽开。</p>
+<p>学过计算机系统的同学应该都知道，经典的PC结构有几种总线：数据总线，地址总线，控制总线，扩展总线等；做过网络设备的同学也都知道，一个经典的网络设备，其软件系统的总线分为：control plane和data plane。</p>
+<h3 id="路由（routing）">路由（routing）</h3><p>有了总线的概念，接下来必然要有路由。我们看人体的血管：<br><img src="http://mmbiz.qpic.cn/mmbiz/SER9L29WQ08d2oBFfNc2vujtnSSNqrUU3YVWhdbOOib4GzeUZiavg8KiadQBzsGlz8cdGsDJI3wv93miaoeRGW51aQ/640?wxfmt=png&amp;tp=webp&amp;wxfrom=5" alt="http://mmbiz.qpic.cn/mmbiz/SER9L29WQ08d2oBFfNc2vujtnSSNqrUU3YVWhdbOOib4GzeUZiavg8KiadQBzsGlz8cdGsDJI3wv93miaoeRGW51aQ/640?wxfmt=png&amp;tp=webp&amp;wxfrom=5"></p>
+<p>每一处分叉，就涉及到一次路由。</p>
+<p>路由分为外部路由和内部路由。外部路由处理输入，把不同的输入dispatch到系统里不同的组件。做web app的，可能没有意识到，但其实每个web framework，最关键的组件之一就是url dispatch。HTTP的伟大之处就是每个request，都能通过url被dispatch到不同的handler处理。而url是目录式的，可以层层演进 —— 就像分形几何，一个大的系统，通过不断重复的模式，组合起来 —— 非常利于系统的扩展。遗憾的是，我们自己做系统，对于输入既没有总线的考量，又无路由的概念，if-else下去，久而久之，代码便绕成了意大利面条。</p>
+<p>再举一例：DOM中的event bubble，在javascript处理起来已然隐含着路由的概念。你只需定义当某个事件（如onclick）发生时的callback函数就好，至于这事件怎么通过eventloop抵达回调函数，无需关心。好的路由系统剥茧抽丝，把繁杂的信息流正确送到处理者手中。</p>
+<p>外部路由总还有「底层」为我们完成，内部路由则需工程师考虑。service级别的路由（数据流由哪个service处理）可以用consul等service discovery组件，service内部的路由（数据流到达后怎么处理）则需要自己完成。路由的具体方式有很多种，pattern matching最为常见。</p>
+<p>无论用何种方式路由，数据抵达总线前为其定义Identity（ID）非常重要，你可以管这个过程叫data normalization，data encapsulation等，总之，一个消息能被路由，需要有个用于路由的ID。这ID可以是url，可以是一个message header，也可以是一个label（想象MPLS的情况）。当我们为数据赋予一个个合理的ID后，如何路由便清晰可见。</p>
+<h3 id="队列（Queue）">队列（Queue）</h3><p>对于那些并非需要立即处理的数据，可以使用队列。队列也有把生产者和消费者分离的功效。队列有：</p>
+<ul>
+<li>single producer single consumer（SPSC）</li>
+<li>single producer multiple consumers（SPMC）</li>
+<li>multiple producers single consumer（MPSC）</li>
+<li>multiple producers multiple consumers（MPMC）</li>
+</ul>
+<p>仔细想想，队列其实就是总线+路由（可选）+存储的一个特殊版本。一般而言，system bus之上是系统的各个service，每个service再用service bus（或者queue）把micro service chain起来，然后每个micro service内部的组件间，再用queue连接起来。</p>
+<p>有了队列，有利于提高流水线的效率。一般而言，流水线的处理速度取决于最慢的组件。队列的存在，让慢速组件有机会运行多份，来弥补生产者和消费者速度上的差距。</p>
+<h3 id="Pub/Sub">Pub/Sub</h3><p>存储在队列中的数据，除路由外，还有一种处理方式：pub/sub。和路由相似，pub/sub将生产者和消费者分离；但二者不同之处在于，路由的目的地由路由表中的表项控制，而pub/sub一般由publisher控制 [2]：任何subscribe某个数据的consumer，都会到publisher处注册，publisher由此可以定向发送消息。</p>
+<h3 id="协议（protocol）">协议（protocol）</h3><p>一旦我们把系统分解成一个个service，service再分解成micro service，彼此之间互不依赖，仅仅通过总线或者队列来通讯，那么，我们就需要协议来定义彼此的行为。协议听起来很高大上，其实不然。我们写下的每个function（或者每个class），其实就是在定义一个不成文的协议：function的arity是什么，接受什么参数，返回什么结果。调用者需严格按照协议调用方能得到正确的结果。</p>
+<p>service级别的协议是一份SLA：服务的endpoint是什么，版本是什么，接收什么格式的消息，返回什么格式的消息，消息在何种网络协议上承载，需要什么样的authorization，可以正常服务的最大吞吐量（throughput）是什么，在什么情况下会触发throttling等等。</p>
+<p>头脑中有了总线，路由，队列，协议等这些在computer science 101中介绍的基础概念，系统的分解便有迹可寻：面对一个系统的设计，你要做的不再是一道作文题，而是一道填空题：在若干条system bus里填上其名称和流进流出的数据，在system bus之上的一个个方框里填上服务的名称和服务的功能。然后，每个服务再以此类推，直到感觉毋须再细化为止。 </p>
+<h2 id="组成系统的必要服务">组成系统的必要服务</h2><p>有些管理性质的服务，尽管和业务逻辑直接关系不大，但无论是任何系统，都需要考虑构建，这里罗列一二。</p>
+<h3 id="代谢（sweeping）">代谢（sweeping）</h3><p>一个活着的生物时时刻刻都进行着新陈代谢：每时每刻新的细胞取代老的细胞，同时身体中的「垃圾」通过排泄系统排出体外。一个运转有序的城市也有新陈代谢：下水道，垃圾场，污水处理等维持城市的正常功能。没有了代谢功能，生物会凋零，城市会荒芜。</p>
+<p>软件系统也是如此。日志会把硬盘写满，软件会失常，硬件会失效，网络会拥塞等等。一个好的软件系统需要一个好的代谢系统：出现异常的服务会被关闭，同样的服务会被重新启动，恢复运行。</p>
+<p>代谢系统可以参考erlang的supervisor/child process结构，以及supervision tree。很多软件，都运行在简单的supervision tree模式下，如nginx。</p>
+<h3 id="高可用性（HA）">高可用性（HA）</h3><p>每个人都有两个肾。为了apple watch卖掉一个肾，另一个还能保证人体的正常工作。当然，人的两个肾是Active-Active工作模式，内部的肾元（micro service）是 N(active)+M(backup) clustering 工作的（看看人家这service的做的），少了一个，performance会一点点有折扣，但可以忽略不计。</p>
+<p>大部分软件系统里的各种服务也需要高可用性：除非完全无状态的服务，且服务重启时间在ms级。服务的高可用性和路由是息息相关的：高可用性往往意味着同一服务的冗余，同时也意味着负载分担。好的路由系统（如consul）能够对路由至同一服务的数据在多个冗余服务间进行负载分担，同时在检测出某个失效服务后，将数据路只由至正常运作的服务。</p>
+<p>高可用性还意味着非关键服务，即便不可恢复，也只会导致系统降级，而不会让整个系统无法访问。就像壁虎的尾巴断了不妨碍壁虎逃命，人摔伤了手臂还能吃饭一样，一个软件系统里统计模块的异常不该让用户无法访问他的个人页面。</p>
+<h3 id="安保（security）">安保（security）</h3><p>安保服务分为主动安全和被动安全。authentication/authorization + TLS + 敏感信息加密 + 最小化输入输出接口可以算是主动安全，防火墙等安防系统则是被动安全。</p>
+<p>继续拿你的肾来比拟 —— 肾脏起码有两大安全系统：</p>
+<p>输入安全。肾器的厚厚的器官膜，保护器官的输入输出安全 —— 主要的输入输出只能是肾动脉，肾静脉和输尿管。</p>
+<p>环境安全。肾器里有大量脂肪填充，避免在撞击时对核心功能的损伤。</p>
+<p>除此之外，人体还提供了包括免疫系统，皮肤，骨骼，空腔等一系列安全系统，从各个维度最大程度保护一个器官的正常运作。如果我们仔细研究生物，就会发现，安保是个一揽子解决方案：小到细胞，大到整个人体，都有各自的安全措施。一个软件系统也需如此考虑系统中各个层次的安全。</p>
+<h3 id="透支保护（overdraft_protection）">透支保护（overdraft protection）</h3><p>任何系统，任何服务都是有服务能力的 —— 当这能力被透支时，需要一定的应急计划。如果使用拥有auto scaling的云服务（如AWS），动态扩容是最好的解决之道，但受限于所用的解决方案，它并非万灵药，AWS的auto scaling依赖于load balancer，如Amazon自有的ELB，或者第三方的HAProxy，但ELB对某些业务，如websocket，支持不佳；而第三方的load balancer，则需要考虑部署，与Amazon的auto scaling结合（需要写点代码），避免单点故障，保证自身的capacity等一堆头疼事。</p>
+<p>在无法auto scaling的场景最通用的做法是back pressure，把压力反馈到源头。就好像你不断熬夜，最后大脑受不了，逼着你睡觉一样。还有一种做法是服务降级，停掉非核心的service/micro-service，如analytical service，ad service，保证核心功能正常。</p>
+<h2 id="把设计的成果讲给别人听">把设计的成果讲给别人听</h2><p>完成了分解和组合，也严肃对待了诸多与业务没有直接关系，但又不得不做的必要功能后，接下来就是要把设计在白板上画下来，讲给任何一个利益相关者听。听他们的反馈。设计不是一个闭门造车的过程，全程都需要和各种利益相关者交流。然而，很多人都忽视了设计定型后，继续和外界交流的必要性。很多人会认为：我的软件架构，设计结果和工程有关，为何要讲给工程师以外的人听？他们懂么？</p>
+<p>其实pitch本身就是自我学习和自我修正的一部分。当着一个人或者几个人的面，在白板上画下脑海中的设计的那一刻，你就会有直觉哪个地方似乎有问题，这是很奇特的一种体验：你自己画给自己看并不会产生这种直觉。这大概是面对公众的焦灼产生的肾上腺素的效果。:)</p>
+<p>此外，从听者的表情，或者他们提的听起来很傻很天真的问题，你会进一步知道哪些地方你以为你搞通了，其实自己是一知半解。太简单，太基础的问题，我们take it for granted，不屑去问自己，非要有人点出，自己才发现：啊，原来这里我也不懂哈。这就是破解 “you don’t know what you don’t know” 之法。</p>
+<p>记得看过一个video，主讲人大谈企业文化，有个哥们傻乎乎发问：so what it culture literally? 主讲人愣了一下，拖拖拉拉讲了一堆自己都不能让自己信服的废话。估计回头他就去查韦氏词典了。</p>
+<p>最后，总有人在某些领域的知识更丰富一些，他们会告诉你你一些你知道自己不懂的事情。填补了 “you know that you don’t know” 的空缺。</p>
+<h2 id="设计时的tradeoff">设计时的tradeoff</h2><p>Rich hickey（clojure作者）在某个演讲中说：</p>
+<blockquote>
+<p>everyone says design is about tradeoffs, but you need to enumerate at least two or more possible solutions, and the attributes and deficits of each, in order to make tradeoff.</p>
+</blockquote>
+<p>所以，下回再腆着脸说：偶做了些tradeoff，先确保自己做足了功课再说。</p>
+<h2 id="设计的改变不可避免">设计的改变不可避免</h2><p>设计不是一锤子买卖，改变不可避免。我之前的一个老板，喜欢把：change is your friend 挂在口头。软件开发的整个生命周期，变更是家常便饭，以至于变更管理都生出一门学问。软件的设计期更是如此。人总会犯错，设计总有缺陷，需求总会变化，老板总会指手画脚，PM总有一天会亮出獠牙，不再是贴心大哥，或者美萌小妹。。。所以，据理力争，然后接受必要的改变即可。连凯恩斯他老人家都说：<br><img src="http://mmbiz.qpic.cn/mmbiz/SER9L29WQ08d2oBFfNc2vujtnSSNqrUUVdmnlTVzU4d2zntficW8VycF9uugzNIDzFaNiaTGcNozIIjMhQpVHnHg/640?wxfmt=jpeg&amp;tp=webp&amp;wxfrom=5" alt="http://mmbiz.qpic.cn/mmbiz/SER9L29WQ08d2oBFfNc2vujtnSSNqrUUVdmnlTVzU4d2zntficW8VycF9uugzNIDzFaNiaTGcNozIIjMhQpVHnHg/640?wxfmt=jpeg&amp;tp=webp&amp;wxfrom=5"></p>
+<p>What do you do, sir?</p>
+<ol>
+<li>Total Cost of Ownership</li>
+<li>要看具体的pub/sub系统的实现方式</li>
+</ol>
+<p>转自：<br><a href="http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&amp;mid=207078329&amp;idx=1&amp;sn=14070c2bc5f24af58e951c8a926964e0" target="_blank" rel="external">http://mp.weixin.qq.com/s?__biz=MzA3NDM0ODQwMw==&amp;mid=207078329&amp;idx=1&amp;sn=14070c2bc5f24af58e951c8a926964e0</a></p>
+<p>欢迎订阅原作者的公众号『程序人生』（搜索微信号 programmer_life）。每篇文章都力求原汁原味，北京时间中午12点左右，美西时间下午8点左右与您相会。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>首先申明，本文转自公众账号《程序人生》，若原作者认为此转载侵犯您的权益，请联系我撤掉。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz/SER9L29WQ09LdatCIcWsnC7ysaK8dhiccaF7iaoPUe5wJt8Ft]]>
+    </summary>
+    
+      <category term="程序人生" scheme="http://blog.supertree.me/tags/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/"/>
+    
+      <category term="程序人生" scheme="http://blog.supertree.me/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[近期一点感悟]]></title>
+    <link href="http://blog.supertree.me/2015/04/21/%E8%BF%91%E6%9C%9F%E4%B8%80%E7%82%B9%E6%84%9F%E6%82%9F/"/>
+    <id>http://blog.supertree.me/2015/04/21/近期一点感悟/</id>
+    <published>2015-04-21T13:42:04.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>近期的变动比较大，无论生活还是工作上。趁着今天去面试后得到的一些感想还未跑到九霄之外，码码文字，写一点感想昂。</p>
+<p>工作上，最大的变化就是下了一个决心，提了一个请求（你懂得）。还记得要提的前一晚，辗转反侧，想到一些人，一些事儿，偶的还关不住眼泪。不过，一夜的思考也让我更加坚定自己所做出的决定不是情绪使然。这不，这段时间工作量也少了，有了更多的思考时间来回顾和以史为鉴，展望未来了。</p>
+<p>昨夜恶补了一些基础知识，然后心中油然而生一种安慰和欢喜，回顾了一些基础知识后，猛地发现，哦，原来其实我大部分都能正常的理解了，别人能够做得到的，我也可以做得到。哈哈~我觉得这是一种最重要，最积极的信号，因为她很久都不曾出现了。我清晰的记得有几次这样的经历，整个人每日的工作都在项目里，为了项目工期，没有时间去交流，没有时间去思考，然后要命的是还不停地犯错，除了大多数是写码时的疏忽，遇到困难时那种无助和思维的窘境也很是煎熬。而反观同事，都是很快的把项目完成，似乎都不太费劲儿。后来，渐渐地开始陷入一种奇怪的循环里，一方面告诉自己要提高，另一方面却怀疑自己是不是压根儿就比别人差，无论再怎么努力也到不到别人的高度，因为好像无论怎么努力都没法和别人一样快，然后这事儿也就一直拖着没有得到答案，再后来这种情绪慢慢发酵，终于，我觉得这完全不是我想要的结果，所以最后的结果。。。</p>
+<p>今天的面试结合之前与人沟通的结果。我想我有了一个答案。积极的心态和正确地方法很重要，同时比较也需要参考客观条件（级别，能力，工作量等等因素）。从前片面的将比较的标准放在了同一条线上，宛如用木桶的短板和木桶的长版比较，结果，可想而知。</p>
+<p>今天也深深地发现，自我的表述能力真心是有很大问题的。我都怀疑自己是不是书读得太少了，心中明明很清楚，但一经口表达出来总有些偏颇的嫌疑，特别是涉及到一些比较笼统或者客观的事物的时候，表达出来的结果，听着常常或多或少都会有些误解。这个，我至今也没找到好的方法，如果你有，请告诉我，谢谢~</p>
+<p>最后，说说一些比较杂乱的感想吧。</p>
+<ol>
+<li>阶段总结，类似于之际评定，个人简历这样的过程其实不可怕，可怕的是你本身惧怕，无论是否承认，你抗拒这种总结，其实心里都有一些不自信。因为，要么你知道没啥可说，要么就是有货吐不出；结局都一样，你不自信，哈哈~</li>
+<li>“闻道有先后,术业有专攻，如是而已”。学习有先后，工作经验更是如此，纵使当下互联网如此之发达，前人几年的工作经验也非在短短的时间之内能够吸收甚至是赶超的（别跟我谈天才）。“路漫漫其修远兮，吾将上下而求索”也是“如是而已”。潜心积累才是正途。</li>
+<li>“世上繁华千千万，穷其一生，也不过选一而终老”。人是如此，兴趣爱好，术业方向更是如此，当下环境百花齐放，新技术如雨后春笋，所以，纵使我们穷其所有工作之外的精力去遍览各家，也终无所获，因为下一刻有可能被取代。框架，技术千千万，而其背后传递的设计思想却将存在很长时间，不断演变和进化，所以，选择一个方向去努力，去探寻其背后所隐藏的思想是非常重要的。当然，如果你选择了一个方向，那么借用一句话：“自己做出的选择，纵使是跪着，也要走完它。”</li>
+</ol>
+<p>好了，就这么多瞎逼逼吧。。。<br>如果有看到这儿的，我表示感谢！因为你把最珍贵的时间留给我了。哈哈~</p>
+<p>祝好~</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>近期的变动比较大，无论生活还是工作上。趁着今天去面试后得到的一些感想还未跑到九霄之外，码码文字，写一点感想昂。</p>
+<p>工作上，最大的变化就是下了一个决心，提了一个请求（你懂得）。还记得要提的前一晚，辗转反侧，想到一些人，一些事儿，偶的还关不住眼泪。不过，一夜的思考也]]>
+    </summary>
+    
+      <category term="感悟" scheme="http://blog.supertree.me/tags/%E6%84%9F%E6%82%9F/"/>
+    
+      <category term="生活" scheme="http://blog.supertree.me/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[2014,look]]></title>
+    <link href="http://blog.supertree.me/2015/02/15/2014/"/>
+    <id>http://blog.supertree.me/2015/02/15/2014/</id>
+    <published>2015-02-15T13:45:42.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>响应大神的号召，积极回顾过去的这一年写点文字，就当这样是与过去告别吧。嘿嘿~</p>
+<h3 id="那些人">那些人</h3><p>佛说五百年的回眸才换来今生的擦肩而过，那这一年中与我相遇，共事，成了朋友的人，不知花了多少个五百年，也是挺不容易的。（好朋友就别说了，我们那会儿都眼瞎，嘿嘿~）回顾这一年，自己改变了许多，少了些许孩子气，多了几分汉子气，而这一切都离不开那些人。</p>
+<p>我现在仍旧记得过去的一年中有很多时候都老是和大娟姐吵架，但大多数的情况下都是我犯了错，结果还不认账，哈啊哈~（大娟姐看不见），也因为我的错误，也给其他的人带来了许许多多的麻烦，虽然别人不说，但每当邮件反复的时候，我也心存不安与愧疚。至于大娟姐嘛，我们还是相互黑，争吵继续，但却也增进同事之间友谊。我还记得有一次晓斌和我聊天，让我适当注意沟通方式，结果，当我礼貌地和大娟姐沟通的时候，她反而不习惯了，然后我又切回正常模式了。不过后来，由于工作安排的关系，我也渐渐不再与她们协调处理工作事宜了，但友谊却是结下了。哈哈~</p>
+<p>若要说到这一年里谁对我的影响最大，那非晓斌莫属了。作为我的直接领导，这一年了不仅给予了我许许多的帮助，还不厌其烦的听了我不计箩筐的吐槽，哈哈~感谢这一年里的包容与谆谆教导，让我看到了自身的众多缺点与不足，也让我能够有时间与机会去更正这些问题，还有让我有机会参与更多的项目，学习更多。</p>
+<p>而这一年的光景里，有许许多多的人需要感谢，无论我们最终是否因时光而关系疏远，我都真挚地感谢那些相遇，共事，相识，做了朋友的人。因为你们，我的生活增添了许许多多的色彩，绚烂丰富，感谢生命的悄然安排~</p>
+<h3 id="那些事儿">那些事儿</h3><p>回顾这一年，无论技术上，还是处事上，都有了许多进步，嘿嘿，不是自夸哦~</p>
+<p>就技术而言，这一年里最大的收获，就是在内部框架和工具上了，虽然缺少总结与细节的理解，但对于现有的业务实现和处理却也渐渐得心应手起来。对于工作事务的处理也渐渐有了信心，能够去承担更多。在涉及非业务的学习上，React 和 iOS 的开发是今年最大的收获，在对于 React 和 iOS 的尝试，学习上渐渐地开萌生出了一个目标，一条路。（至于是啥，不可说）</p>
+<p>写的头疼。。。【未完待续】</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>响应大神的号召，积极回顾过去的这一年写点文字，就当这样是与过去告别吧。嘿嘿~</p>
+<h3 id="那些人">那些人</h3><p>佛说五百年的回眸才换来今生的擦肩而过，那这一年中与我相遇，共事，成了朋友的人，不知花了多少个五百年，也是挺不容易的。（好朋友就别说了，我们那]]>
+    </summary>
+    
+      <category term="2014" scheme="http://blog.supertree.me/tags/2014/"/>
+    
+      <category term="个人小结" scheme="http://blog.supertree.me/tags/%E4%B8%AA%E4%BA%BA%E5%B0%8F%E7%BB%93/"/>
+    
+      <category term="2014" scheme="http://blog.supertree.me/categories/2014/"/>
+    
+      <category term="小结" scheme="http://blog.supertree.me/categories/2014/%E5%B0%8F%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Object-c 学习笔记(1)]]></title>
+    <link href="http://blog.supertree.me/2015/01/18/Object-c-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)/"/>
+    <id>http://blog.supertree.me/2015/01/18/Object-c-学习笔记(1)/</id>
+    <published>2015-01-18T07:55:04.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<ol>
+<li>关于 Object-C</li>
+<li>关于本文档</li>
+<li>开始的例子</li>
+<li>初识类、对象和方法</li>
+<li>初识数据类型，表达式</li>
+<li>循环结构</li>
+<li>选择结构</li>
+<li>Object-C中的类</li>
+<li>继承</li>
+<li>多态，动态类型和动态绑定</li>
+<li>变量和数据类型</li>
+<li>分类和协议</li>
+<li>预处理程序</li>
+<li>Object-C中C的语言特性</li>
+<li>Foundation框架<ol>
+<li>Foundation 框架简介</li>
+<li>数字、字符串和集合</li>
+<li>使用文件</li>
+<li>内存管理和自动引用计数</li>
+<li>复制对象</li>
+<li>归档</li>
+</ol>
+</li>
+<li>Cocoa、Cocoa Touch 与 iOS 的 SDK<ol>
+<li>Cocoa 和 Cocoa Touch 简介</li>
+<li>编写 iOS Application</li>
+</ol>
+</li>
+<li>DEMO Zip</li>
+</ol>
+<a id="more"></a>
+<h1 id="关于_Object-C">关于 Object-C</h1><p>Objective-C，通常写作ObjC和较少用的Objective C或Obj-C，是扩充C的面向对象编程语言。它主要使用于Mac OS X和GNUstep这两个使用OpenStep标准的系统，而在NeXTSTEP和OpenStep中它更是基本语言。Objective-C可以在GCC以及Clang运作的系统上编写和编译，因为GCC与Clang含Objective-C的编译器。1980年代初布莱德·确斯(Brad Cox)在其公司Stepstone发明Objective-C。他对软件设计和编程里的真实可用度问题十分关心。Objective-C最主要的描述是他1986年出版的Object Oriented Programming: An Evolutionary Approach. Addison Wesley. ISBN 0-201-54834-8.</p>
+<p>From <a href="http://baike.baidu.com/link?url=ynO86_jvU8MKpxEPTUL-adhfeQkBB4WFp5pzpxOfrDuGXx_VnuHnuP4FcuggnAt2HGjInSMl80uQWzVYjqRnMq#7" target="_blank" rel="external">百度百科 Object-C</a></p>
+<h1 id="关于本文档">关于本文档</h1><p>首先，关于语言基础的问题，只要你会用一门编程语言写程序，那就不用怀疑自己看不懂，如果你没有编程基础，本文档可能对你有些鸭梨，因为我不会详细记述一些编程的“基础”；其次，声明：“<strong>本文采用的xcode 为目前最新的 xcode 6.1.1 。</strong>”；再次，这份文档如其名，是我自己学习 Object-C 的过程记录，只是过程记录，没有刻意像教程一样去组织。So，不要问挖掘机哪家强…，文档从前至后难免有些难以概念不清楚的地方。因为事实上，学习本来就是循序渐进的过程，某个阶段对某些概念不甚理解本来就很正常，但随着学习的深入，才能认识到庐山真面目。Last，不要太过于纠结，做人最重要的就是开心，你饿不饿，。。。。</p>
+<h1 id="开始的例子">开始的例子</h1><p>“Wow ~ , Hello World!”，看书前，我也这么想的╮(╯_╰)╭，不过这次：</p>
+<pre><code><span class="preprocessor">#import <span class="title">&lt;Foundation/Foudation.h&gt;</span></span>
+
+<span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> chart * argv[])
+{
+    <span class="keyword">@autoreleasepool</span> {
+        <span class="built_in">NSLog</span>(<span class="string">@"Programming is fun!"</span>);
+        <span class="built_in">NSLog</span>(<span class="string">@"Programming in Object-C is even more fun!"</span>);
+    }
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</code></pre><p>输入结果：</p>
+<p><img src="http://ww3.sinaimg.cn/large/6e360ed5gw1eodrwcce71j20in01zq3f.jpg" alt="output"></p>
+<p>看过上面的代码，有过C、java的编程基础的都有一种熟悉感，瞧，这 “int main()”，这不是主函数么。<br>不过，“#import <foundation foundation.h="">”，这个表达式第一次见，是导入文件。</foundation></p>
+<p>“@autoreleasepool{…}”，花括号中的语句会在被称为“自动释放池（autoreleasepool）”的语境中执行。自动释放池的机制是：它使得应用在创建新对象时，系统能够有效地管理应用所使用的内存。</p>
+<p>接下来，“NSLog(@”Programming is fun!”)”，就像C语言中的printf那样，仅仅显示或记录参数（或者参数列表，后面将会看到）。等等，好像有点奇怪，“@”没有看到输出，这是个啥？“@”位于一对双引号的字符串前面，这称为常亮NSString。C语言中也有字符串的类型，但显然这两者是有区别的。</p>
+<p>“return 0;”这没啥可讲的，表示程序结束返回 int 0。</p>
+<p>本节最后，补充一点关于Object-C文件扩展名的知识。</p>
+<table>
+<thead>
+<tr>
+<th>扩展名</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.h</td>
+<td style="text-align:center">头文件</td>
+</tr>
+<tr>
+<td>.m</td>
+<td style="text-align:center">Object-C 源文件</td>
+</tr>
+<tr>
+<td>.mm</td>
+<td style="text-align:center">Object-C++源文件</td>
+</tr>
+<tr>
+<td>.o</td>
+<td style="text-align:center">Object(编译后的)文件</td>
+</tr>
+</tbody>
+</table>
+<h1 id="初识类、对象和方法">初识类、对象和方法</h1><p>关于类、对象和方法这三个概念，不讲解。再通过一个例子来看看Object-C中的类如何定义，对象和方法的声明和使用。这个例子实现分数的处理。</p>
+<pre><code>#<span class="keyword">import</span> &lt;Foundation/Foundation.h&gt;
+
+<span class="comment">//----------@interface 部分 --------</span>
+
+<span class="annotation">@interface</span> <span class="string">Fraction:</span> NSObject
+
+-(<span class="typename">void</span>)    print;
+-(<span class="typename">void</span>)    <span class="string">setNumerator:</span> (<span class="typename">int</span>)    n
+-(<span class="typename">void</span>)    <span class="string">setDenominator:</span> (<span class="typename">int</span>) d;
+
+<span class="annotation">@end</span>
+
+<span class="comment">//-----------@implementation 部分 ---------</span>
+
+<span class="annotation">@implementation</span> Fraction
+{
+    <span class="typename">int</span> numberator;
+    <span class="typename">int</span> denominator;
+}
+
+-(<span class="typename">void</span>)    print;
+{
+    NSLog(@<span class="string">"%i/%i"</span>, numberator, denominator);
+}
+
+-(<span class="typename">void</span>)    <span class="string">setNumberator:</span> (<span class="typename">int</span>) n
+{
+    numberator = n;
+}
+
+-(<span class="typename">void</span>)        <span class="string">setDenominator:</span> (<span class="typename">int</span>) d
+{
+    denominator = d;
+}
+
+<span class="annotation">@end</span>
+
+#--------------program 部分 ---------------
+
+<span class="typename">int</span> main(<span class="typename">int</span> argc, <span class="typename">char</span> * argv[]) {
+    <span class="annotation">@autoreleasepool</span> {
+        Fraction *myFraction;
+
+        <span class="comment">// 创建一个分数实例</span>
+
+        myFraction = [[Fraction alloc] init];
+
+        [myFraction <span class="string">setNumberator:</span> <span class="number">1</span>];
+        [myFraction <span class="string">setDenominator:</span> <span class="number">3</span>];
+
+        <span class="comment">// 使用打印方法显示分数</span>
+        NSLog(@<span class="string">"The value of myFraction is:"</span>);
+        [myFraction print];
+    }
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</code></pre><p>输出结果：</p>
+<p><img src="http://ww1.sinaimg.cn/large/6e360ed5gw1eoe0wd7ktaj20jc01ymxj.jpg" alt="Fraction"></p>
+<p>从代码的注释中可以划分出三个部分：</p>
+<ul>
+<li>@interface 部分</li>
+<li>@implementation 部分</li>
+<li>Program 部分</li>
+</ul>
+<p>其中，@interface 部分用于描述类和类方法；@implementation 部分用于描述数据（类对象的实例变量存储的数据），并实现在接口中声明方法的实际代码；Program 部分的程序实现了程序的预期目的。以上 3 各部分存在于每个 Object-C 程序中，即使你可能不需要自己编写每一部分。后面，你会看到，每一部分通常放在它自己的文件中。然而就目前而言，就先放到一起吧。</p>
+<p>刚说到 @interface 部分用于描述类和类方法，一般格式如下：</p>
+<pre><code><span class="variable">@interface</span> <span class="attribute">NewClassName</span>: ParentClassName
+    propertyAndMethodDeclarations;
+<span class="variable">@end</span>
+</code></pre><p>关于 Object-C 中的变量名有两点需要说明：第一，根据规定，<strong>$</strong> 不能出现在变量名中，例如： some$value 是一个非法的变量名称；第二，Object-C 区分大小写。</p>
+<p>一开始看到 “-(void) print”，这个方法声明的时候，第一反应就是 print 是个私有的方法，不过后来，我知道自己理解错了。方法前面的负号“-”用以通知 Object-C 编译器，该方法是一个实例方法，而如果前面是正号“+”，它表示类方法。类方法是对类本身执行某些操作的方法，例如，创建类的新实例。</p>
+<p>继续往下看的时候，我很纳闷，为啥声明两个 “set” 方法，直接 “myFraction.numberator = 1 …” 不就好了么，这么周折。Oh，no ，Object-C 中不允许你直接访问类的实例变量，所以还是老老实实地写方法吧。最后，来看看函数的参数的写法。“(int) n” ，括号里表示数据类型， “n” 就是参数的名称。如果方法接受一个参数，那么在引用该方法时，在方法名之后附加一个冒号。</p>
+<p>“@implementation 部分” 需要实现 “@interface 部分” 中声明的代码，且需要制定存储在类对象中数据类型。@implementation 部分的一般格式如下：</p>
+<pre><code><span class="at_rule">@<span class="keyword">implementation</span> NewClassName
+</span>{
+    <span class="tag">memberDeclarations</span>;
+} 
+    <span class="tag">methodDefinitions</span>;
+<span class="at_rule">@<span class="keyword">end</span></span>
+</code></pre><p>从代码里可以看出 @implementation Fraction 与 @interface Fraction 保持一致，至于是否要指明父类，你可以这样做，但通常不应该这样做。</p>
+<p>OK，初识@implementation 部分就这么多了。接着来看看 program 部分。这一部分包含了解决特定问题的代码，如果有必要，它可以跨越多个文件。前面提到，必须在某个地方有一个名为 main 的函数。作为程序的入口。而这部分的代码也无需过多的讨论。值得说的在于类的实例化。</p>
+<pre><code><span class="built_in">Fraction</span> *myFraction;
+
+myFraction = [[<span class="built_in">Fraction</span> alloc] init]
+</code></pre><p>第一句声明对象的方式有些奇特，额，这里解释不了，就这样先接受了。第二句连续调用了两个方法：alloc 和 init 。咦，Fraction 的声明里没有这两个方法啊！有些诡异，等等，@interface 部分有这样一个语句：<code>@interface Fraction: NSObject</code>。前面提到过，这是声明Fraction 继承 NSObject 。想到这里，就猜，alloc 和 init 方法继承于 NSObject。至于真相是不是这样，后面就知道了。</p>
+<p>alloc 方法的作用是分配内存，为谁呢？为 Fraction 咯，init 方法，完成初始化。这里再回头看看刚才<code>Faction *myFraction</code>这句，刚才说到这里声明有些奇特，而奇特的关键就是 <code>*</code> 号，刚说到 alloc 方法的作用是分配内存，既然说到内存，联想到C语言，用指针指向内存，那么此处亦是一样，指明myFraction 是一个引用（指针）。</p>
+<p>在 program 部分隐藏着一个概念：“数据封装”。简单而言就是访问实例变量的唯一方法就是实例的 Getter 和 Setter。具体，就不多说了，程序猿（媛）都知道。</p>
+<p>最后，<code>[[Fraction alloc] init]</code> 有一个更为那简单的替代方法：<code>[Fraction new]</code> 就行了。但，通常推荐采用两步方法调用。That’s all.下面将学习一下 Object-C 的数据类型和表达式。</p>
+<h1 id="初识数据类型，表达式">初识数据类型，表达式</h1><p>先来认识两个概念：“数据类型和常量”。数据类型就不用多说了，表明变量的数据类型，而在 Object-C 中任何数字、单个字符或者字符串通常都称为常量。</p>
+<p>OK，先来看看四种基本数据类型：int、float、double 和 char。数字类型的都比较基础，与C语言差不多，也可以加限定词，其他的就不过多说了。来看看 char 类型，chart 变量可存储单个字符。将字符放入一对单引号中能够得到字符常量。不要把字符常量和C语言风格的字符串混为一谈，字符常量是放在单引号中的单个字符，而字符串则是放在双引号中的任意个数的字符。这里要特殊说明的是 ‘\n’是一个合法的字符常量。Object-C 编译器将 ‘\n’ 看做单个字符。</p>
+<p>“id类型”，可存储任何类型的对象。从某种意义说，它是一般对象类型。前面不能加限定词哈！</p>
+<p>说到 Object-C 中的算术表达式和赋值表达式，这些各家变成语言都差不多，因此，不多说了。</p>
+<h1 id="循环结构">循环结构</h1><p>像 C 语言那样，Object-C 中也有三种循环语句：</p>
+<ul>
+<li>for 语句</li>
+<li>while 语句</li>
+<li>do-while 语句</li>
+</ul>
+<p>对于以上三种循环语句，都已是再熟悉不过了，因此，也不做过多的叙述。</p>
+<h1 id="选择结构">选择结构</h1><p>Object-C 提供了以下三种选择结构：</p>
+<ul>
+<li>if 语句</li>
+<li>switch 语句</li>
+<li>conditional 运算符</li>
+</ul>
+<p>具体的选择结构，不叙述，地球人都知道。这里要说说，Object-C 中内置的两个特性，可以使 Boolean 变量的使用更容易。一种是特殊类型 Bool ，它可以用于声明值非真即假的变量。另一种是预定义的值 YES 和 NO。在程序中使用这些预定义的值可使它们更易于便编写和读取。</p>
+<p>最后，关于条件语句， Xcode 支持如下条件运算符的非 ANSI 扩展的语句：</p>
+<pre><code><span class="keyword">condition</span> ? : <span class="keyword">expression</span>
+</code></pre><p>上面的语句等效于： <code>condition ? condition : expression</code> 。</p>
+<h1 id="类">类</h1><p>前面的基础说的差不多了，现在继续进入 Object-C 中最为核心的部分：<strong>类</strong> 。首先，来看看怎样使用 Xcode 将程序分离接口和实现。</p>
+<p><img src="http://ww1.sinaimg.cn/large/6e360ed5gw1eou818yvuij20ka0by0uh.jpg" alt="New File"></p>
+<p><img src="http://ww3.sinaimg.cn/large/6e360ed5gw1eou82cpvyfj20ka0bywf7.jpg" alt="New Class"></p>
+<p><img src="http://ww3.sinaimg.cn/large/6e360ed5gw1eou83lb8s4j20js0jnwg9.jpg" alt="Save Class"><br>通过以上三个步骤，就可以轻松实现接口与实现的分离。需要说明一点的是，在导入文件的时候，要用一对引号引起来，而不是 “&lt;” 和 “&gt;” 字符。双引号适用于本地文件，而不是系统文件，这样就通知编译器在哪里能找到指定的文件。还有一点要说明的是，永远包含接口文件，而不是实现文件。</p>
+<h3 id="合成存取方法">合成存取方法</h3><p>从 Object-C 2.0 开始，可自动生成设值方法和取值方法（统称为存取方法）。到目前为止，都没有介绍过如何实现，是因为知道如何自己实现这些方法非常重要。然而，既然语言提供了这样的机制，那么，还是本着偷懒的原则，充分利用这个功能。</p>
+<p>第一步是在接口部分中使用 @property 指令标识属性。这些属性的命名与实例变量相同，尽管不是必须要这样做。使用 @property 指令标识属性后，在接口部分便不再需要显式声明 Getter 和 Setter 方法。</p>
+<p>第二步在实现部分使用 @synthesize 指令即可。看段代码：</p>
+<pre><code><span class="preprocessor">#import <span class="title">"Fraction.h"</span></span>
+
+<span class="class"><span class="keyword">@implementation</span> <span class="title">Fraction</span></span>
+
+<span class="keyword">@synthesize</span> numerator, denominator;
+
+-(<span class="keyword">void</span>) print
+{
+    <span class="built_in">NSLog</span>(<span class="string">@"%i/%i"</span>, numerator, denominator);
+}
+
+<span class="keyword">@end</span>
+</code></pre><p>有一点值得注意的是，你其实也可以在实现部分不使用 @synthesize 指令，仅在 @interface 部分使用 @property 指令就足够了。编译器会自动为你生成 Getter 和 Setter 。但是，注意，如果你不使用 @synthesize，那么编译器生成的实例变量会以下划线（_）字符作为其名称的第一个字符。</p>
+<h3 id="使用点运算符访问属性">使用点运算符访问属性</h3><p>熟悉 Javascript 的人都知道，要访问一个对象的属性，直接使用点运算符就可以Get。同样，Object-C 语言允许你使用点运算符访问属性。想想上面的例子中获取属性的方式：</p>
+<pre><code>[myFraction numerator]
+</code></pre><p>而现在只需要：</p>
+<pre><code><span class="tag">myFraction</span><span class="class">.numerator</span>
+</code></pre><p>即可获得相同的结果。Getter 是如此，Setter 也是如此。</p>
+<pre><code>myFraction<span class="class">.numerator</span> = value
+</code></pre><p>即可设置 numerator 的值。</p>
+<p>很棒，是吧！需要指出的是，点运算符不仅可以访问属性，还可以访问自定义方法。但是，通常你都不要尝试那样做！</p>
+<p>最后，有一点要注意的是：使用合成的存取方法，属性名称前面不要以 new 、 alloc 、 copy 或者 init 这些词开头。这与编译器的一些假定有关，因为编译器会合成相应地方法，后面的“内存管理”章节会有详细的描述。</p>
+<h3 id="具有多个参数的方法">具有多个参数的方法</h3><p>通过列出每个连续的参数并用冒号将其连起来，就可以定义一个接收多个参数的方法。用冒号连接的参数将成为这个方法名的一部分。例如，方法名 addEntryWithName:andEmail:表示接受两个参数的方法，这两个参数可能是姓名和电子邮件地址。方法 addEntryWithName:andEmail:andPhone:是接收3个参数的方法：一个姓名、一个电子邮件和一个电话号码。</p>
+<p>当然，参数名也是可以省略的，但是，强烈不推荐那样！</p>
+<p>OK，暂时就这样。。。。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<ol>
+<li>关于 Object-C</li>
+<li>关于本文档</li>
+<li>开始的例子</li>
+<li>初识类、对象和方法</li>
+<li>初识数据类型，表达式</li>
+<li>循环结构</li>
+<li>选择结构</li>
+<li>Object-C中的类</li>
+<li>继承</li>
+<li>多态，动态类型和动态绑定</li>
+<li>变量和数据类型</li>
+<li>分类和协议</li>
+<li>预处理程序</li>
+<li>Object-C中C的语言特性</li>
+<li>Foundation框架<ol>
+<li>Foundation 框架简介</li>
+<li>数字、字符串和集合</li>
+<li>使用文件</li>
+<li>内存管理和自动引用计数</li>
+<li>复制对象</li>
+<li>归档</li>
+</ol>
+</li>
+<li>Cocoa、Cocoa Touch 与 iOS 的 SDK<ol>
+<li>Cocoa 和 Cocoa Touch 简介</li>
+<li>编写 iOS Application</li>
+</ol>
+</li>
+<li>DEMO Zip</li>
+</ol>]]>
+    
+    </summary>
+    
+      <category term="Object-c" scheme="http://blog.supertree.me/tags/Object-c/"/>
+    
+      <category term="xcode" scheme="http://blog.supertree.me/tags/xcode/"/>
+    
+      <category term="Object-c" scheme="http://blog.supertree.me/categories/Object-c/"/>
+    
+      <category term="xcode" scheme="http://blog.supertree.me/categories/Object-c/xcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[当我准备离职的时候我在想什么]]></title>
+    <link href="http://blog.supertree.me/2015/01/09/i-will-go-,-but-something-what-i-think/"/>
+    <id>http://blog.supertree.me/2015/01/09/i-will-go-,-but-something-what-i-think/</id>
+    <published>2015-01-09T14:06:42.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="当我准备离职的时候我在想什么">当我准备离职的时候我在想什么</h1><p>看到这个标题，或许你会觉得很奇怪，你TM不是都准备离职了么？你还能想啥啊，无非就是如何和老大谈、怎样交接工作，然后好好准备好心情迎接下一份工作。</p>
+<p>嗯，第一次离职的时候，我差不多的确是那个状况。但这一次，我真的想得很多。</p>
+<a id="more"></a>
+<h2 id="为何离开">为何离开</h2><h3 id="“活儿多”">“活儿多”</h3><p>现在业内关于跳槽有种说法：跳槽，无非活多，钱少，跳跳更健康。呵呵~我只同意活多，至于钱的问题，实在还真不是我主要关心的（我也很穷的，好吧）。OK，说道活多，未涉足这个行业的时候，我老幻想每天都能有事儿做，忙的不亦乐乎，不至于无聊的蛋疼，哈哈~那句话怎样说来着，理想很丰富，现实很骨感。当你长时间（一年半载）不停地重复做事儿，而不能成长，这也罢了，坑爹的是，你还不能把项目给做快了，要不你闲下来就又得做事儿了，即使不是你的，这个时候，不知道你咋想，反正我觉得，这TM有啥意思啊！</p>
+<p>OK，以上就是我在想要离开的理由之一。那么问题来了，挖掘机。。。。Sorry ，情不自禁。。。</p>
+<h3 id="“活儿多”-1">“活儿多”</h3><p>有些狭隘的思考我就不说了，现实虽然很残酷，自己知道就行了，我们还是需要对未来充满希望的。关于活儿多的问题，我找了老大谈了谈，听了听他的意见，也找朋友吐了吐槽，听了听他的话。好了，现在两方面的意见都来了，一方面自己觉得这事儿就没意思，是时候该换工作了，另一方面，又是长辈们对我的教诲，因为，他们的话，细细思来皆是道理，自己都不好意思反驳。纠结了一天，最后还是在这儿说说自己的想法吧，也算给各位一个参考：</p>
+<h3 id="“思考也多”">“思考也多”</h3><p>就老做重复性的事儿，这件事儿本身而言，谁都不喜欢长时间地做（此处应该有共鸣），且不说我们总幻想着自己能变成超人这点儿破奢望，就人的本性而言，谁不希望成长呢？ctrl+C + ctrl+V ，谁不会呢？若哪天真要换工作了，别人问你在上家公司做了啥，你好意思理直气壮地说：也没做啥，就 ctrl+C &amp; ctrl+V ，说得出口么？那么问题又来了，没有挖掘机了。。。</p>
+<pre><code>“当你不停地在重复的时候，你有思考过么？”
+</code></pre><p>虽然我们可以设定一个状态，然后不断的重复完成工作，可，我们终究不是计算机，而是创造计算机的人类啊！！！每次又开始的时候，你有思考过么？（打脸）</p>
+<p>思考偷懒，三个方向：</p>
+<ol>
+<li>代码层面上，这些重复性的工作，可否减少重复性的可能，自动化？</li>
+<li>沟通层面上，这些重复性的工作，是否可以有可以避免的，减少的？</li>
+<li>协调层面上，这些重复性的工作，是否有团队其他成员可以帮忙处理的？</li>
+</ol>
+<p>思考成长，也是三个方向：</p>
+<ol>
+<li>代码层面上，真的搞懂了这些重复性的工作中所蕴含的知识了？都说做多了，理解就多了，自问达到了么？</li>
+<li>沟通层面上，你真的会说接受和拒绝么？不懂的拒绝，就放弃了自我权力，也放弃了抱怨的权力。</li>
+<li>工作效率上，有木有提高自己的工作效率，没有就别说了。</li>
+</ol>
+<p>好吧，继续下个话题。</p>
+<h3 id="“项目不能做快”">“项目不能做快”</h3><p>呵呵~转换一下还是上面说的，项目做快了，你闲下来了，被领导发现了吧，啊，哈哈！！！恭喜你，你又有活儿了，即使不是你的，而且你还没得选择。因为好像那些活儿本来就该你的一样。这就是我最初的想法，一点也没偏颇，是啊，我工作效率提高了，然后就换来这个结果，我还想着，自己提高工作效率可以去做更多自己的尝试，呵呵，结果，还是得干活儿。。。。</p>
+<h3 id="“思考”">“思考”</h3><p>上面的问题，是直接导致我准备离职的原因，不过后来和前辈们沟通了一下，细细思来，这TM还是自己的问题啊！！！</p>
+<p>首先，你是觉得你的工作效率提高了，但究竟是不是，或许是不是你本身就承担的少呢？如果是，就别瞎逼逼了。。。。</p>
+<p>其次，咋就不会拒绝了，或许是因为理由太不堪一击了吧。（打脸，不说了）</p>
+<p>最后，既然接下来，不为别的就为这份愤怒，也得把这事儿做好！</p>
+<p>好了，就这样吧，以上这些吐槽也不过是我在最近这些事儿中思考所得的一些点，至于为啥停笔了，是因为下面要开始行动了，如果做到了这次所思考的部分，对得起自己，对得起他人，那时候，是时候该走了。</p>
+<p>最后，即使我们怎样努力终究也只是一个平凡人，但至少努力地过程对得起自己不平凡的心。</p>
+<p>—- EOF —-</p>
+<p>当我真的离职的时候，我会再写一篇看看是否做到了。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="当我准备离职的时候我在想什么">当我准备离职的时候我在想什么</h1><p>看到这个标题，或许你会觉得很奇怪，你TM不是都准备离职了么？你还能想啥啊，无非就是如何和老大谈、怎样交接工作，然后好好准备好心情迎接下一份工作。</p>
+<p>嗯，第一次离职的时候，我差不多的确是那个状况。但这一次，我真的想得很多。</p>]]>
+    
+    </summary>
+    
+      <category term="感悟" scheme="http://blog.supertree.me/tags/%E6%84%9F%E6%82%9F/"/>
+    
+      <category term="感悟" scheme="http://blog.supertree.me/categories/%E6%84%9F%E6%82%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[jQuery 中的 Promise]]></title>
+    <link href="http://blog.supertree.me/2014/12/17/More-about-Promise/"/>
+    <id>http://blog.supertree.me/2014/12/17/More-about-Promise/</id>
+    <published>2014-12-16T16:22:37.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>在<a href="http://http://blog.supertree.me/2014/12/14/%E5%88%9D%E8%AF%86Promise/" target="_blank" rel="external">《初识 Promise 》</a>这篇文章中，通过异步读取文件的例子，对 Promise 有了一个浅显地认识，至于 promise 在 javascript 中更多或者更为深入地应用却不知晓。</p>
+<p>那么，今天这篇文章，就试图通过更多的例子，结合 Promise 的一个实现：jQuery 的实际应用来探讨一下实际编程中 promise 的应用以及最佳实践。</p>
+<p>在开始接下来的话题前，我们需要一台时光机，把时光拨回到 Promise 处于 Promise/A proposal 的时候。</p>
+<p>准备好了么？Ready，Go~</p>
+<a id="more"></a>
+<h2 id="Promise_&amp;_deferred">Promise &amp; deferred</h2><p>Person：咦，在2014年，Promise/A+ 规范里，没有看见过 deferred 嘞，那它到底是啥呢？</p>
+<p>Author：其实啊，Promise 作为一种编程思想或者说编程方式，早在1976年就已经诞生了。至于你看到的标题中的两个概念，简单而言：</p>
+<pre><code><span class="bullet">* </span>Promise 其实仅仅表示一种未可知的值，但将来可知；
+<span class="bullet">* </span>deferred 则表示一项还未完成的工作，但将来一定完成；
+</code></pre><p>而通过下面的这张图，相信你就能比较清晰的了解他们的关系了：<br><img src="http://ww3.sinaimg.cn/large/6e360ed5jw1enbzcyw3vej20hs0jbab7.jpg" alt="promise&amp;deferred"></p>
+<p>至于在 javascript 中引入 promise ，其实是为了帮助码农们用同步的方式去书写异步回调。</p>
+<p>上图一目了然，我也就不做过的解读，不浪费时间，接着开启下一部分。哦，系好安全带，回2014年。</p>
+<p>Person：别呀，我还没看够啊。。。，你还有很多东西没有讲到啊，比如，那时的 then 函数。。。。</p>
+<p>Author：母鸡啊，给你原文，让你即使回去也能看个够，传送门：<a href="http://blog.mediumequalsmessage.com/promise-deferred-objects-in-javascript-pt1-theory-and-semantics" target="_blank" rel="external">Promise &amp; Deferred objects in JavaScript Pt.1: Theory and Semantics.</a>,Go,Go,Go~</p>
+<h2 id="Promise_&amp;_jQuery">Promise &amp; jQuery</h2><p>谈到 jQuery 与 Promise 就不得不面对这样一个事实，jQuery 中 Promise 的实现其实是与规范有所出入的，当然，我们作为使用者或许不用太过于关注，而且好在 jQuery 中的“Promise对象”也可以通过简单的操作转换为规范的 Promise对象，当然前提是规范的Promise存在咯。</p>
+<pre><code><span class="keyword">var</span> jQueryPromise = $.ajax(<span class="string">'/data.json'</span>);
+<span class="keyword">var</span> realPromise = <span class="built_in">Promise</span>.resolve(jQueryPromise);
+<span class="comment">//now just use `realPromise` however you like.</span>
+</code></pre><p>OK，关于jQuery中Promise的实现不是本文的重点，作为一个初学者，本文着重介绍 Promise 这种思想通过与 jQuery 结合在实际的编程中给我们到底带来了哪些启迪。</p>
+<p>在谈到Promise出现在javascript中的意义的时候，了解promise的人或许都能脱口而出，为了解决复杂回调或者说回调金字塔（回调黑洞）问题。Good，我们先抛开服务端nodeJs不谈，仅仅来聊聊Browser中可能出现回调金字塔问题的情况。</p>
+<p>Person：咦，那不就是 ajax 么？<br>Author：Bingo，But not all.</p>
+<p>既然我们最先想到的是 ajax ，那么下面我就通过几个例子来详细说明吧。</p>
+<p>首先要说的这个例子，实现了这样一个功能：点击按钮，从 Github 获取 Node 的 gitignore template ，然后将内容填充到 test 那个 div 中。</p>
+<p>很简单，是吧。喂喂，jQuery 该你上场了。</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/Phinome/et6jkbkc/2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>Person：Oh，No，你咋不按常规出牌呢？说好的只有 ajax 呢？<br>Author: </p>
+<pre><code>$.ajax({
+    url: <span class="symbol">'https</span>:<span class="comment">//api.github.com/gitignore/templates/Node',</span>
+    <span class="class"><span class="keyword">type</span>:</span> <span class="symbol">'ge</span>t'
+})
+</code></pre><p>这不是么？至于你说的：</p>
+<pre><code><span class="comment">// The Promise and handler</span>
+<span class="function"><span class="keyword">def</span> =</span> <span class="keyword">new</span> $.<span class="type">Deferred</span>();
+</code></pre><p>嘿嘿~这个真不好意思，不过既然我吃了炫迈，就根本停不下来啊~前方解释代码预警，如果你很熟悉了，就别跟我这个菜鸟计较，直接跳过就好了~</p>
+<pre><code><span class="comment">// The Promise and handler</span>
+<span class="function"><span class="keyword">def</span> =</span> <span class="keyword">new</span> $.<span class="type">Deferred</span>();
+</code></pre><p>别问我这货是啥。</p>
+<blockquote>
+<p>A constructor function that returns a chainable utility object with methods to register multiple callbacks into callback queues, invoke callback queues, and relay the success or failure state of any synchronous or asynchronous function.</p>
+<p>—From <a href="http://api.jquery.com/jQuery.Deferred/" target="_blank" rel="external">jQuery.Deferred</a></p>
+</blockquote>
+<p>上面就是 new 一个deferred对象（哦，程序员是没有对象的）。通过查手册可以知道，def 这个对象有很多方法和事件处理函数，其中，有三个重要的方法和三个关键的事件，我挑了出来：</p>
+<p>Method：</p>
+<ul>
+<li>promise</li>
+<li>resolve</li>
+<li>reject</li>
+</ul>
+<p>Handlers:</p>
+<ul>
+<li>done</li>
+<li>fail</li>
+<li>always</li>
+</ul>
+<p>以上各个方法，函数具体是干啥的，手册里有，我就不过多的去解释了。回到代码上来：</p>
+<pre><code><span class="comment">// Event Handler</span>
+resolvePromise = function (ev) {
+    ev.preventDefault();
+    <span class="function"><span class="keyword">def</span>.<span class="title">resolve</span>(</span>ev.<span class="keyword">type</span>, <span class="keyword">this</span>);
+    <span class="keyword">return</span> <span class="function"><span class="keyword">def</span>.<span class="title">promise</span>(</span>);
+};
+</code></pre><p>这个事件处理函数中 <code>def.resolve(ev.type, this);</code> 语句，后面的 ajax 操作时，deferred对象会根据返回结果，自动改变自身的执行状态；但是，在resolvePromise()函数中，这个执行状态必须由程序员手动指定。def.resolve()的意思是，将def对象的执行状态从”未完成”改为”已完成”，从而触发done()方法。 说清楚了吧？接下来是一个 return 语句，一开始，我也不理解这货到底是干啥用的，不过，看过下面两个例子后，我再详细解释一下：</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/Phinome/e56e2gks/2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>第一个例子，你会发现，本来我们预想着是先看到“执行完毕”，但事实却是先看到了“哈哈~成功了”，聪明的你可能已经知道问题的原因了，那么，如何解决这个问题呢？</p>
+<p>Person：去掉最后的 d.resolve()咯。<br>Author：No,No,No…</p>
+<p>我们接着来看第二个例子：</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/Phinome/2poxfLq2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>看出差异来了么？问题的关键就在于这次 wait() 最后<code>return dtd.promise()</code> 返回了一个 promise 对象；而 deferred.promise() 方法的作用就是在原来的deferred对象上返回另一个deferred对象，后者只开放了与改变执行状态无关的（比如：done,fail,always）方法，而屏蔽了与执行状态有关的方法（比如：resolve,reject），从而使得执行状态不能改变。<br>看明白了上面的两个例子，也就明白了为啥最后需要 <code>return def.promise()</code>了吧？</p>
+<p>Wow~我们几天接着上次未完的部分再续前文。</p>
+<p>相信你一定看到了 <code>def.then()</code> 函数调用了（没看到的，拉倒）。先来看看规范中是怎样定义的：</p>
+<pre><code>A promise <span class="keyword">is</span> defined <span class="keyword">as</span> an <span class="built_in">object</span> that has a <span class="keyword">function</span> <span class="keyword">as</span> the value <span class="keyword">for</span> the <span class="keyword">property</span> <span class="keyword">then</span>:
+
+&lt;code&gt;<span class="keyword">then</span>(fulfilledHandler, errorHandler, progressHandler)&lt;/code&gt;
+
+Adds a fulfilledHandler, errorHandler, <span class="keyword">and</span> progressHandler <span class="keyword">to</span> be called <span class="keyword">for</span> completion <span class="keyword">of</span> a promise. The fulfilledHandler <span class="keyword">is</span> called <span class="keyword">when</span> the promise <span class="keyword">is</span> fulfilled. The errorHandler <span class="keyword">is</span> called <span class="keyword">when</span> a promise fails. The progressHandler <span class="keyword">is</span> called <span class="keyword">for</span> progress events. All arguments are <span class="keyword">optional</span> <span class="keyword">and</span> non-<span class="keyword">function</span> values are ignored. The progressHandler <span class="keyword">is</span> <span class="keyword">not</span> only an <span class="keyword">optional</span> argument, but progress events are purely <span class="keyword">optional</span>. Promise implementors are <span class="keyword">not</span> required <span class="keyword">to</span> ever <span class="keyword">call</span> a progressHandler (the progressHandler may be ignored), this parameter exists so that implementors may <span class="keyword">call</span> it <span class="keyword">if</span> they have progress events <span class="keyword">to</span> report.
+
+This <span class="keyword">function</span> should <span class="keyword">return</span> a <span class="keyword">new</span> promise that <span class="keyword">is</span> fulfilled <span class="keyword">when</span> the given fulfilledHandler <span class="keyword">or</span> errorHandler callback <span class="keyword">is</span> finished. This allows promise operations <span class="keyword">to</span> be chained together. The value returned <span class="keyword">from</span> the callback handler <span class="keyword">is</span> the fulfillment value <span class="keyword">for</span> the returned promise. <span class="keyword">If</span> the callback throws an <span class="keyword">error</span>, the returned promise will be moved <span class="keyword">to</span> failed state. 
+</code></pre><p>从规范可以看出，then 函数是有三个参数的，不同于 nodeJs 的回调函数第一个参数是 error ，then 的第一个参数是 fulfilledHandler，即表示：当 promise 转变为 fulfilled 状态的时候被调用，第二个参数也很好理解，当 promise 转变为 rejected 状态时被调用。可能不常用的便是第三个参数，progressHandler 函数，根据规范的定义可以知道，progressHandler 函数在Progress events 时被调用。相信大多数人都能看明白 then 的定义，然而，为啥需要 then ，则是下面要讲的。</p>
+<p>首先，再来回顾一下异步调用中存在的问题，我们从两个方面来理解：</p>
+<ul>
+<li>They return values</li>
+<li>They throw exceptions </li>
+</ul>
+<p>或许你觉得在链式调用中，一个函数的返回值直接传递给另一个（下一个）是一件在正常不过的事儿了，然而，试想一下，如果在这条链式调用中，某个节点抛出了异常，那么在整个链上谁应该（能）catch 呢？</p>
+<p>而上述的问题，在异步调用中，首先，返回值不是立即返回的，其次，即使抛出 exceptions ，谁又 catch &amp; handler 呢？而在没有 promise 的时候，我们要解决这些问题咋整呢？“回调金字塔”咯</p>
+<p>而前面谈到过 Promise 出现在 javascript 中目的是帮助我们解决回调金字塔的问题，让我们能够使用书写同步代码的方式去书写异步代码，那么问题来了，不是挖掘机。。。</p>
+<p>在 Promise 中返回的是一个 promise ：</p>
+<ul>
+<li>Become fulfilled by a value</li>
+<li>Become rejected with an exception</li>
+</ul>
+<p>Pending。。。。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在<a href="http://http://blog.supertree.me/2014/12/14/%E5%88%9D%E8%AF%86Promise/">《初识 Promise 》</a>这篇文章中，通过异步读取文件的例子，对 Promise 有了一个浅显地认识，至于 promise 在 javascript 中更多或者更为深入地应用却不知晓。</p>
+<p>那么，今天这篇文章，就试图通过更多的例子，结合 Promise 的一个实现：jQuery 的实际应用来探讨一下实际编程中 promise 的应用以及最佳实践。</p>
+<p>在开始接下来的话题前，我们需要一台时光机，把时光拨回到 Promise 处于 Promise/A proposal 的时候。</p>
+<p>准备好了么？Ready，Go~</p>]]>
+    
+    </summary>
+    
+      <category term="Promise" scheme="http://blog.supertree.me/tags/Promise/"/>
+    
+      <category term="deferred" scheme="http://blog.supertree.me/tags/deferred/"/>
+    
+      <category term="es6" scheme="http://blog.supertree.me/tags/es6/"/>
+    
+      <category term="jQuery" scheme="http://blog.supertree.me/tags/jQuery/"/>
+    
+      <category term="Promise" scheme="http://blog.supertree.me/categories/Promise/"/>
+    
+      <category term="es6" scheme="http://blog.supertree.me/categories/Promise/es6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[初识Promise]]></title>
+    <link href="http://blog.supertree.me/2014/12/14/%E5%88%9D%E8%AF%86Promise/"/>
+    <id>http://blog.supertree.me/2014/12/14/初识Promise/</id>
+    <published>2014-12-14T15:51:06.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="初识Promise">初识Promise</h1><h3 id="为啥要用Promise？">为啥要用Promise？</h3><p>考虑一个栗子：读取一个文件，然后将内容解析为 JSON。Javascript 代码如下：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSONSync</span>(<span class="params">filename</span>) </span>{
+      <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(fs.readFileSync(filename, <span class="string">'utf8'</span>));
+}
+</code></pre><p>上面这段代码中，由于读取文件采用的是同步的方式，将会阻塞其他的操作，直到文件读取完毕，而现实中，我们显然不希望是这样的结果，因此，通常我们都采取异步地方式：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span><span class="params">(filename, callback)</span></span>{
+      fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err, res)</span></span>{
+        <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="keyword">callback</span>(err);
+        <span class="keyword">callback</span>(<span class="literal">null</span>, JSON.parse(res));
+      });
+}
+</code></pre><p>上面这段代码，咋一看似乎一切都很完美，通过异步调用IO完美解决了阻塞的问题，然而，细细思考却发现：</p>
+<p>1.参数中的 callback ，这货到底是输入的参数还是返回的值呢？</p>
+<p>2.原有的控制流程不再起作用了；</p>
+<p>3.JSON.parse 没有抛出错误；</p>
+<a id="more"></a>
+<p>OK，既然上面的代码以上这些问题，那么，我们尝试来解决 JSON.parse 没有抛出错误的问题，代码如下：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span><span class="params">(filename, callback)</span></span>{
+      fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err, res)</span></span>{
+        <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="keyword">callback</span>(err);
+        <span class="keyword">try</span> {
+              res = JSON.parse(res);
+        } <span class="keyword">catch</span> (ex) {
+              <span class="keyword">return</span> <span class="keyword">callback</span>(ex);
+        }
+        <span class="keyword">callback</span>(<span class="literal">null</span>, res);
+      });
+}
+</code></pre><p>Oh…，这看上去似乎也不错，至少把 JSON.parse 可能出错抛出来了。额，可是这略显混乱的代码，似乎也不太清晰吧，况且还是没有解决 ”callback“ 这个看上去似乎又是参数又是返回值的问题。</p>
+<p>那，问题来了，挖掘机。。。哦，这不是蓝翔，是 Promise。</p>
+<p>Wow~ Promise 出场了，它能帮你解决以上的问题，同时写出结构清晰的代码。</p>
+<p>老规矩，首先介绍一下 Promise 是何方神圣？</p>
+<blockquote>
+<p>promise 表示一个异步操作的最终结果。与 promise 进行交互的主要方式是通过 then 方法，该方法注册了两个回调函数，用于接受 promise 的最终结果或者 promise 的据因。（原文传送门：<a href="http://promisesaplus.com/" target="_blank" rel="external">http://promisesaplus.com/</a>）</p>
+</blockquote>
+<p>这是官方的说法，但是我还是更喜欢张鑫旭的说法。</p>
+<blockquote>
+<p>OK，首先第1点，Promise是一种形式。</p>
+<p>注意这里的措辞，“Promise是一种形式”，也就是不要把Promise看成是某些方法、函数之类的。类似于不要把“小姐”看成某个人，而是某种职业。</p>
+<p>Promise中文有“誓言”、“承诺”之意。从字面意思我们也似乎体会出一点“形式”的味道。但是，注意这里的转折，根据自己的理解，Promise完全不能按照“承诺”来理解，而是要根据其音译——“普罗米修斯”。普罗米修斯是希腊神话故事中的英雄，名字的意思是“先知”。Promise最初的命名是Futures, “未来”，可见Promise含义不是字面的“誓言”“承诺”之类，而是“先知”“未来”的意思。<a href="From http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/">传送门</a></p>
+</blockquote>
+<p>Promise 是一种形式，而不是函数或方法，当然就更不是类了。Of course ，一千个读者一千个哈姆雷特，你不是这样理解的，我也不会去咬你。扯淡就到此为止。</p>
+<p>刚才说了 Promise 是一种形式，一种解决复杂异步操作的方式，那么这种方式又有哪些内容呢？</p>
+<p>首先，不得不说的是其三种状态（Other：报告，不是说还有第四种状态么？传送门：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise</a> ，Author：别逼逼）：</p>
+<ul>
+<li>pending: initial state, not fulfilled or rejected.</li>
+<li>fulfilled: successful operation</li>
+<li>rejected: failed operation.</li>
+</ul>
+<p>上面这几个状态的英文就不用我翻译了吧。关于以上这几个状态的转化，这片文章里就不多说了，只需要记住一点：一旦一个 Promise 处于 fulfilled 状态或者 rejected 状态，就再也不能转化为其它状态了。</p>
+<p>好了，以上说了这么多，估计你都看烦了吧？（没看够，本文也没多余的介绍了）。那么，我们就用 promise 这种方式来将之前的代码改造一下。一起来瞅瞅，这货真的有那么神奇么？</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readFile</span>(<span class="params">filename, enc</span>)</span>{
+      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">fulfill, reject</span>)</span>{
+        fs.readFile(filename, enc, <span class="function"><span class="keyword">function</span> (<span class="params">err, res</span>)</span>{
+              <span class="keyword">if</span> (err) reject(err);
+              <span class="keyword">else</span> fulfill(res);
+        });
+      });
+}
+</code></pre><p>（Person：咦，噢，Wow~，看上去好像很不错的样子，草莓味么？）</p>
+<p>额，忽略上面一段。。。。，通过上面的代码，结合上面说的三个状态，可以看出，如果 promise 变为 fulfilled 状态，那么就表示目标达成，此时直接 fulfill ( res ) 就好了，反之，则是目标没有达成，那么，直接 rejected ( err ) 也就好了，这一切看起来是不是很熟悉啊~此处应有拍桌~这TM，不是我们正常处理事务的方式么？目标达成就高高兴兴地执行下面的事儿，反之，悲剧了再努力努力咯。</p>
+<p>Person：咦，谁知道 promise 的状态转换为 fulfilled 或 rejected 了呢？</p>
+<p>promise.done 咯，当 promise 完成状态转换后，会调用 promise.done ，按照这个思路来重写刚才的 readJSON 方法：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>{
+      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">fulfill, reject</span>)</span>{
+        readFile(filename, <span class="string">'utf8'</span>).done(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>)</span>{
+              <span class="keyword">try</span> {
+                fulfill(<span class="built_in">JSON</span>.parse(res));
+              } <span class="keyword">catch</span> (ex) {
+                reject(ex);
+              }
+        }, reject);
+      });
+}
+</code></pre><p>当然以上这段代码，还是有一些可以改进的地方，至于是啥，我不告诉你。</p>
+<p>此处有注意：(自己看英文，我比较懒，就不翻译了。)</p>
+<blockquote>
+<p>Non Standard</p>
+<p>Note that promise.done (used in the examples in this section) has not been standardised. It is supported by most major promise libraries though, and is useful both as a teaching aid and in production code. I recommend using it along with the following polyfill (minified / unminified):</p>
+<p><code>&lt;script src=&quot;https://www.promisejs.org/polyfills/promise-done-6.0.0.min.js&quot;&gt;&lt;/script&gt;</code>    </p>
+</blockquote>
+<p>Person：咦。。。就这点货？</p>
+<p>猴急个啥，马上上菜。</p>
+<h3 id="Transformation_/_Chaining">Transformation / Chaining</h3><p>老规矩，不翻译，你爱咋理解，咋理解。</p>
+<p>使用过 jQuery 的都知道，jQuery 里有一个很棒的方式：链式调用。接着刚才那个 readJSON 例子，那段代码中 readFile.done 其实是个同步操作，那么我们能把它转换为异步操作么？Of course，promise 规范里就有一个 then 方法，用来传递 promise 并提供链式操作。</p>
+<p>那么，我们用 then 方法来重写上面的那个例子：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>{
+      <span class="keyword">return</span> readFile(filename, <span class="string">'utf8'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">res</span>)</span>{
+        <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(res)
+      })
+}
+</code></pre><p>既然 JSON.parse === ‘function’ ， 那么还可以这样写：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span>(<span class="params">filename</span>)</span>{
+      <span class="keyword">return</span> readFile(filename, <span class="string">'utf8'</span>).then(<span class="built_in">JSON</span>.parse);
+}
+</code></pre><p>咳咳~就到这儿吧。至于具体的实现，请直接看下面的参考资料吧。</p>
+<p><em>参看文章：</em></p>
+<ol>
+<li><p>Specification [ <a href="https://promisesaplus.com/" target="_blank" rel="external">https://promisesaplus.com/</a> ]</p>
+</li>
+<li><p>Promise From Mozilla [ <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise</a> ]</p>
+</li>
+<li><p>ES6 JavaScript Promise的感性认知 [ <a href="http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/" target="_blank" rel="external">http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/</a> ]</p>
+</li>
+<li><p>Promises [ <a href="https://www.promisejs.org/" target="_blank" rel="external">https://www.promisejs.org/</a> ]</p>
+</li>
+</ol>
+<p><em>具体实现：</em></p>
+<ol>
+<li><p>Q [ <a href="http://documentup.com/kriskowal/q/" target="_blank" rel="external">http://documentup.com/kriskowal/q/</a> ]</p>
+</li>
+<li><p>promise [ <a href="https://github.com/then/promise" target="_blank" rel="external">https://github.com/then/promise</a> ]</p>
+</li>
+<li><p>when [ <a href="https://github.com/cujojs/when" target="_blank" rel="external">https://github.com/cujojs/when</a> ]</p>
+</li>
+</ol>
+<p>还有其他欢迎你告诉我，感谢~</p>
+<p>—- EOF —-</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="初识Promise">初识Promise</h1><h3 id="为啥要用Promise？">为啥要用Promise？</h3><p>考虑一个栗子：读取一个文件，然后将内容解析为 JSON。Javascript 代码如下：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSONSync</span>(<span class="params">filename</span>) </span>{
+      <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(fs.readFileSync(filename, <span class="string">'utf8'</span>));
+}
+</code></pre><p>上面这段代码中，由于读取文件采用的是同步的方式，将会阻塞其他的操作，直到文件读取完毕，而现实中，我们显然不希望是这样的结果，因此，通常我们都采取异步地方式：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span><span class="params">(filename, callback)</span></span>{
+      fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err, res)</span></span>{
+        <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="keyword">callback</span>(err);
+        <span class="keyword">callback</span>(<span class="literal">null</span>, JSON.parse(res));
+      });
+}
+</code></pre><p>上面这段代码，咋一看似乎一切都很完美，通过异步调用IO完美解决了阻塞的问题，然而，细细思考却发现：</p>
+<p>1.参数中的 callback ，这货到底是输入的参数还是返回的值呢？</p>
+<p>2.原有的控制流程不再起作用了；</p>
+<p>3.JSON.parse 没有抛出错误；</p>]]>
+    
+    </summary>
+    
+      <category term="Promise" scheme="http://blog.supertree.me/tags/Promise/"/>
+    
+      <category term="es6" scheme="http://blog.supertree.me/tags/es6/"/>
+    
+      <category term="Promise" scheme="http://blog.supertree.me/categories/Promise/"/>
+    
+      <category term="es6" scheme="http://blog.supertree.me/categories/Promise/es6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[chrome-devTools-notes]]></title>
+    <link href="http://blog.supertree.me/2014/10/13/chrome-devTools-notes/"/>
+    <id>http://blog.supertree.me/2014/10/13/chrome-devTools-notes/</id>
+    <published>2014-10-13T13:05:21.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>整理一下@acelan在团队内部给我们做的关于chrome devtools的分享。</p>
+<h2 id="Chrome_版本">Chrome 版本</h2><p>首先，谈到Chrome，就不得不说说Chrome的各个版本。<br><img src="http://ww1.sinaimg.cn/large/6e360ed5jw1el9uy51msqj20dc07g74q.jpg" alt="chrome versions"></p>
+<h3 id="Chromium:">Chromium:</h3><ul>
+<li>Chrome 就是基于这个开源项目开发的</li>
+<li>功能超前</li>
+<li>提供各种操作系统下的二进制版本</li>
+<li>可能还不太稳定，不要对它偶尔崩溃感到奇怪</li>
+</ul>
+<h3 id="Chrome:">Chrome:</h3><ul>
+<li>基于 Chromium 开发的稳定版本</li>
+<li>增加了Google添加的各种features</li>
+<li>提供各种操作系统下的二进制版本</li>
+<li>闭源</li>
+</ul>
+<h3 id="Chrome_Canary:">Chrome Canary:</h3><ul>
+<li>Chrome 版本中最接近 Chromium 的版本</li>
+<li>功能超前，不仅有Chromium 中新增的features，还有Google添加的各种features</li>
+<li>提供各种操作系统下的二进制版本</li>
+<li>可能还不太稳定，不要对它偶尔崩溃感到奇怪</li>
+</ul>
+<h3 id="参考资料：">参考资料：</h3><ul>
+<li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/scripts/" target="_blank" rel="external">https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/scripts/</a></li>
+<li><a href="https://chromium.googlesource.com/chromium/blink/" target="_blank" rel="external">https://chromium.googlesource.com/chromium/blink/</a></li>
+<li><a href="http://dev.chromium.org" target="_blank" rel="external">http://dev.chromium.org</a></li>
+</ul>
+<a id="more"></a>
+<h2 id="chrome_DevTols">chrome DevTols</h2><p>讲清楚了Chrome的版本关系，接着就开始进入分享的主题内容，chrome devTools。</p>
+<p><img src="http://ww4.sinaimg.cn/large/6e360ed5jw1el9uyh6z6qj20dc07haai.jpg" alt="devTools Overview"></p>
+<p>Chrome的DevTools是一套内置于谷歌Chrome浏览器，帮助Web开发人员检查代码面板。您可以使用快捷键访问DevTools （<strong>CTRL + SHIFT + I</strong>在Windows和<strong>CMD +选项</strong>+我在Mac上）或通过右键单击任意位置上的一个网页，选择审查元素从上下文菜单中。使用这些工具，可以调试CSS ，javascript，分析JavaScript性能，浏览网络活动和资源。通过(<strong>CTRL + [</strong> 在Windows和<strong>CMD + [</strong> ) 切换开发者工具的选项卡。</p>
+<p>那么现在大家对chrome devtools 有了一个初步的印象了，接着，我们就深入到 devtools 的各个面板功能里去，详细的了解一下各个面板的功能和使用。</p>
+<h3 id="NetWork_面板登场了。">NetWork 面板登场了。</h3><p><img src="http://ww3.sinaimg.cn/large/6e360ed5jw1el9vamtwo5j20dc07et8y.jpg" alt="Network"></p>
+<h5 id="网络处理模型">网络处理模型</h5><p><img src="http://ww1.sinaimg.cn/large/6e360ed5jw1el9vj91vujj20ak05x74g.jpg" alt="processing Model"></p>
+<p>W3c的<a href="http://www.w3.org/TR/navigation-timing/" target="_blank" rel="external">Navigation Timing specification</a>定义了一组API，可以观察到浏览器的每一个请求(request)的时序和性能数据。<br>如上图所示</p>
+<h5 id="资源加载瀑布流">资源加载瀑布流</h5><p><img src="http://ww1.sinaimg.cn/large/6e360ed5jw1el9vnsqm3ij20ak02smx7.jpg" alt="waterfall view"></p>
+<p>图中有两条特别颜色线显得很特别，他们分别代表着 DOMContentLoaded ，熟悉 jQuery 的同学可能会立马想到 ready event (?) 和 onload (?) 。</p>
+<h5 id="资源详情">资源详情</h5><p><img src="http://ww1.sinaimg.cn/large/6e360ed5jw1el9vxghl8nj20a005n74j.jpg" alt="network resource detail"></p>
+<p>在这个面板里</p>
+<p><strong>Headers</strong> 标签中可以查看 HTTP 协议定义的 Request Headers 和 Response Headers；</p>
+<p><strong>Preview</strong> 标签里预览 Response 的结果；</p>
+<p><strong>Response</strong> 标签里，顾名思义，查看 HTTP 响应；</p>
+<p><strong>Cookies</strong> 标签里，查看资源是否携带 cookie , 展示 cookie 的详细情况；</p>
+<p><strong>Timing</strong> 标签里，查看该资源在以上讲述的各个阶段里的耗时情况；</p>
+<h5 id="Resource-Timing">Resource-Timing</h5><p>面板各标签介绍之后，就该进入该主题下的重点内容，Resource-Timing:</p>
+<p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1elb0cvmuycj20dc07gq3h.jpg" alt="Resource-Timing"></p>
+<p>如上所述，w3c定义了一个网络请求所必须要经历的过程，那么每一个过程里都发生了什么呢？这就是今天要讲述的内容。</p>
+<p>给定一个网页资源地址后，<strong>浏览器就会检查本地缓存和应用缓存</strong>。如果之前获取过并且有相应的缓存信息(appropriate cache headers)(如Expires, Cache-Control, etc.), 就会用缓存数据填充这个请求，毕竟最快的请求就是没有请求(the fastest request is a request not made)。否则，我们重新验证资源，如果已经失效(expired),或者根本就没见过，一个耗费网络的请求就无法避免地发送了。</p>
+<p>给定了一个主机名和资源路径后，<strong>Chrome先是检查现有已建立的连接(existing open connections)是否可以复用</strong>, 即sockets指定了以(scheme、host和port)定义的连接池(pool)。但如果配置了一个代理，或者指定了 proxy auto-config (PAC)脚本，Chrome就会检查与proxy的连接。PAC脚本基于URL提供不同的代理，或者为此指定了特定的规则。与每一个代理间都可以有自己的socket pool。最后，上述情况都不存在，这个请求就会从DNS查询(DNS lookup)开始了，以便获得它的IP地址。</p>
+<p>幸运的话，这个主机名已经被缓存过。否则，必须先发起一个DNS Query。这个过程所需的时间和ISP,页面的知名度，主机名在中间缓存(intermediate caches)的可能性，以及authoritative servers的响应时间这些因素有关。也就是说这里变量很多，不过<strong>一般还不致于到几百毫秒</strong>那么夸张。</p>
+<p>拿到解析出的IP后,Chrome就会在目标地址间打开一个新TCP连接，我们就要执行一个<strong>3度握手(“three-way handshake”): SYN &gt; SYN-ACK &gt; ACK</strong>。这个操作每个新的TCP连接都必须完成，没有捷径。根据远近，路由路径的选择，这个过程可能要<strong>耗时几百毫秒，甚至几秒</strong>。而到现在，我们连一个有效的字节都还没收到。</p>
+<p>当TCP握手完成了，如果我们连接的是一个<strong>HTTPS地址，还有一个SSL握手过程</strong>，同时又要增加最多两轮的延迟等待。如果SSL会话被缓存了，就只需一次。</p>
+<p>最后，Chrome终于要发送HTTP请求了 (如上面图示中的requestStart)。服务器收到请求后，就会传送响应数据(response data)回到客户端。这里包含最少的往返延迟和服务的处理时间。然后一个请求就完成了。但是，如果是一个HTTP重定向(redirect)的话？我们又要从头开始这个过程。如果你的页面里有些冗余的重定向，最好三思一下！</p>
+<p>OK，现在你应该对网络有了一个较为清晰的认识了吧，我们继续讲述 DevTools 的另一个强大的面板 <strong>Elements</strong></p>
+<h3 id="Elements">Elements</h3><p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1elb1qc8inbj20dc07fglu.jpg" alt="elements"></p>
+<p>先认识一下 Elements 面板：</p>
+<p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1elb1w45b7aj20dc04tt8x.jpg" alt="Elements Panel"></p>
+<p>左边显示的是网页的 DOM 树渲染完毕后的结果，右边有五个标签，分别是 Styles , Computed , Event Listeners , DOM Breakpoints , Properties 。</p>
+<p><strong>Styles</strong> 标签，显示左侧被选中的元素的CSS样式，包含样式表中定义和浏览器自定义的CSS规则，但没有浏览器计算后的属性；</p>
+<p><strong>Computed</strong> 标签，显示浏览器计算后的CSS属性的值；</p>
+<p><strong>Event Listerners</strong> 标签，顾名思义，查看DOM事件的面板；</p>
+<p><strong>DOM Breakpoints</strong> 标签，查看 DOM 断点，当在左侧面板里选中某个元素后设置了DOM断点，那么在此面板中将显示；</p>
+<p><strong>Properties</strong> 标签，查看选中元素的包含的属性，以及相关元素和对象的属性；</p>
+<p><strong>关于 Elements 面板部分的详细整理，我将新开一文专述各项功能的使用。</strong></p>
+<p>Go on , Next Source :</p>
+<h3 id="Source">Source</h3><p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1elb2itepygj20dc07f74o.jpg" alt="Source Panel"></p>
+<p><img src="http://ww4.sinaimg.cn/large/6e360ed5jw1elf3k2dot1j20dc0c23zj.jpg" alt="Source Panel Detail"></p>
+<p>如图所示，Source 面板有三块区域，其中左侧区域又有三个Tab，<strong>source</strong>展现了当前站点页面引用的所有资源的情况；<strong>Content Script</strong>标签，显示启用的 Chrome Plugins Script；Snippets标签；中间的区域，作为显示代码的区域，右侧面板包含了各种调试所需的工具；</p>
+<p>好了，说了这么多，接下来我们就从 debugger 开始，通过实践来了解 Source 面板的各项功能；</p>
+<h5 id="debugger">debugger</h5><p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1elc71yrqw7j20dc07a74m.jpg" alt="debugger"></p>
+<p>通过上图可以看出，当在源文件中写 debugger; 后，当写入 debugger; 这个 js 文件加载的时候 chrome 就会在这儿停下来，等待指示；</p>
+<h5 id="Breakpoint(DOM,_XHR,_Events),_Condition_Breakpoint">Breakpoint(DOM, XHR, Events),   Condition Breakpoint</h5><p>那么断点和条件断点又是什么呢？谜底接下来揭开：</p>
+<p><strong>BreakPoint</strong></p>
+<p><img src="http://ww3.sinaimg.cn/large/6e360ed5jw1elf3spm8zlj20dc07q0tj.jpg" alt="break point"></p>
+<p>可以看到，上图中我们设置了3个断点，当$scope.addTodo函数被触发时，浏览器将在40行 todos.push({title:newTodo})<br>处停止，等待你的指令，此刻，下列按钮就要登场了：</p>
+<p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1elf3zvlzgkj200u00m0ot.jpg" alt="Continue"> <strong>Continue</strong>：调过当前断点。快捷键：F8 或者 Command-/ on Mac 或者 Control-/ on other platforms</p>
+<p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1elf41lupoij200u00m0pc.jpg" alt="Step Over"> <strong>Step Over</strong>：一行一行地执行当前的代码，当遇到函数调用时并不会进入被调用的函数内部，而是直接返回<br>被调用函数的返回值。快捷键：F10 或者 Command-‘ (apostrophe) on Mac 或者 Control-‘ (apostrophe) on other platforms.</p>
+<p><img src="http://ww4.sinaimg.cn/large/6e360ed5jw1elf48p9gb6j200u00m0oz.jpg" alt="Step Into"> <strong>Step Into</strong>：与Step Over执行类似，但不同的是当遇到函数调用的时候，执行会进入被调用的函数内部，单步执行。快捷键： F11 或者 Command-; (semi-colon) on Mac 或者 Control-; (semi-colon); on other platforms.</p>
+<p><img src="http://ww3.sinaimg.cn/large/6e360ed5jw1elf4b6cg7cj200u00m0p1.jpg" alt="Step Out"> <strong>Step Out</strong>：当单步执行已经进入被调用函数内部时，点击这个按钮，将返回到被调用函数的父函数。快捷键：Shift-F11 或者 Shift-Command-; (semi-colon) on Mac 或者 Shift-Control-; (semi-colon) on other platforms.</p>
+<p><img src="http://ww3.sinaimg.cn/large/6e360ed5jw1elf4qs0pzmj200q00j0hh.jpg" alt="Toggle breakpoints"> <strong>Toggle breakpoints</strong>：打开或关闭所有断点。</p>
+<p>通过以上的这几个按钮，你就能轻松 debug Javascript 了。</p>
+<p>讲完了单纯的断点后，那条件断点又是什么呢？</p>
+<p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1elf4x2fp2ij20dc07taap.jpg" alt="Condition Breakpoint"></p>
+<p>哈哈～明白了吧。</p>
+<p>至于 Watch Expressions （观察表达式）和 Pretty Print ，这两项功能，你点点，相信我，你会回来的，哈哈～</p>
+<p>最后，奉送 source 面板里的几个快捷方式，可以为你的查找和调试加速不少，嘎嘎～</p>
+<pre><code><span class="constant">Go </span>to line：    <span class="constant">Ctrl </span>+ <span class="constant">G </span>   <span class="constant">Ctrl </span>+ <span class="constant">G</span>
+
+<span class="constant">Search </span>by filename：    <span class="constant">Ctrl </span>+ <span class="constant">O </span>   <span class="constant">Cmd </span>+ <span class="constant">O</span>
+
+<span class="constant">Jump </span>to line number    ：  <span class="constant">Ctrl </span>+ <span class="constant">P </span>+ <span class="symbol">:&lt;number&gt;</span>    <span class="constant">Cmd </span>+ <span class="constant">P </span>+ <span class="symbol">:&lt;number&gt;</span>
+
+<span class="constant">Jump </span>to column：    <span class="constant">Ctrl </span>+ <span class="constant">O </span>+ <span class="symbol">:&lt;number&gt;</span> + <span class="symbol">:&lt;number&gt;</span>  <span class="constant">Cmd </span>+ <span class="constant">O </span>+ <span class="symbol">:&lt;number&gt;</span> + <span class="symbol">:&lt;number&gt;</span>
+
+<span class="constant">Go </span>to member    <span class="constant">Ctrl </span>+ <span class="constant">Shift </span>+ <span class="constant">O </span>   <span class="constant">Cmd </span>+ <span class="constant">Shift </span>+ <span class="constant">O</span>
+
+<span class="constant">Toggle </span>console <span class="keyword">and</span> evaluate code selected <span class="keyword">in</span> <span class="constant">Sources </span>panel    <span class="constant">Ctrl </span>+ <span class="constant">Shift </span>+ <span class="constant">E </span>   <span class="constant">Cmd </span>+ <span class="constant">Shift </span>+ <span class="constant">E</span>
+
+<span class="constant">Close </span>active tab    <span class="constant">Alt </span>+ <span class="constant">W </span>   <span class="constant">Opt </span>+ <span class="constant">W</span>
+</code></pre><p>截至到此，本章所要讲述的内容就将告一段落了，后续将分章节详细讲述 Console ， Remote Debugger ，Timeline 和 Profiles。</p>
+<p>写在最后，这篇文章可以当作一篇Chrome devTools 的入门指南，断断续续整理，本文中的笔误和错误在所难免，加之个人理解可能出现偏差，因此，若有不当之处，烦请指出，感谢～</p>
+<p>－－ENDOF －－</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>整理一下@acelan在团队内部给我们做的关于chrome devtools的分享。</p>
+<h2 id="Chrome_版本">Chrome 版本</h2><p>首先，谈到Chrome，就不得不说说Chrome的各个版本。<br><img src="http://ww1.sinaimg.cn/large/6e360ed5jw1el9uy51msqj20dc07g74q.jpg" alt="chrome versions"></p>
+<h3 id="Chromium:">Chromium:</h3><ul>
+<li>Chrome 就是基于这个开源项目开发的</li>
+<li>功能超前</li>
+<li>提供各种操作系统下的二进制版本</li>
+<li>可能还不太稳定，不要对它偶尔崩溃感到奇怪</li>
+</ul>
+<h3 id="Chrome:">Chrome:</h3><ul>
+<li>基于 Chromium 开发的稳定版本</li>
+<li>增加了Google添加的各种features</li>
+<li>提供各种操作系统下的二进制版本</li>
+<li>闭源</li>
+</ul>
+<h3 id="Chrome_Canary:">Chrome Canary:</h3><ul>
+<li>Chrome 版本中最接近 Chromium 的版本</li>
+<li>功能超前，不仅有Chromium 中新增的features，还有Google添加的各种features</li>
+<li>提供各种操作系统下的二进制版本</li>
+<li>可能还不太稳定，不要对它偶尔崩溃感到奇怪</li>
+</ul>
+<h3 id="参考资料：">参考资料：</h3><ul>
+<li><a href="https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/scripts/">https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/scripts/</a></li>
+<li><a href="https://chromium.googlesource.com/chromium/blink/">https://chromium.googlesource.com/chromium/blink/</a></li>
+<li><a href="http://dev.chromium.org">http://dev.chromium.org</a></li>
+</ul>]]>
+    
+    </summary>
+    
+      <category term="chrome" scheme="http://blog.supertree.me/tags/chrome/"/>
+    
+      <category term="devTools" scheme="http://blog.supertree.me/tags/devTools/"/>
+    
+      <category term="devTools" scheme="http://blog.supertree.me/categories/devTools/"/>
+    
+      <category term="chrome" scheme="http://blog.supertree.me/categories/devTools/chrome/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[SASS,Compass 学习之旅（一）]]></title>
+    <link href="http://blog.supertree.me/2014/09/18/learn-sass-compass-1/"/>
+    <id>http://blog.supertree.me/2014/09/18/learn-sass-compass-1/</id>
+    <published>2014-09-18T13:57:19.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>很早的时候就听说过Sass 和 compass 了，bootstrap 2.3 发布后貌似就 compass 的 framework ，之前一直觉得手写Css 才是王道，加之工作中也渐渐的很少从零开始去书写大量的CSS，后来随着 bootstrap 3.0 的发布，貌似没有支持 Sass ，而支持了 less ，因此，又觉得不知所措，一直也没有计划去学习 Sass 和 Compass。最近处理工作中的业务时，面对纷乱的CSS代码，处理得十分闹心，一直想着要重构整个系统，但又面对如何处理CSS犯起了愁，就在这时，想起了 Sass 和 compass。</p>
+<h2 id="Sass_和_Compass_是什么">Sass 和 Compass 是什么</h2><p>诚然，Sass 和 compass 不是银弹也不是精灵粉，它不能立即帮我做好排版和布局，但是至少它能帮助我更快的实现想法并减少麻烦。那么事实真是如此么，且待我慢慢道来：</p>
+<a id="more"></a>
+<p>首先，简要地介绍一下什么是 Sass 和 Compass，以下是他们的独白：</p>
+<blockquote>
+<p> Sass: 我是 CSS3 语言的扩展，我能帮助你更省事儿地写出更好的样式表，是你摆脱重复劳动，使你的工作更有创造性。Ruby作为我背后强大的引擎，其高效性与稳定性，帮你省去很多烦恼。那么，我究竟是怎样工作的呢？看图说话。</p>
+</blockquote>
+<p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1ekgzysplfvj20ex04v3yl.jpg" alt="sass workflow"></p>
+<p>看明白了么？看不明白也不要紧，下面的部分会详细讲解的，哈哈～[doge]</p>
+<p>看完了 Sass 的独白，compass 有些等不及了，那么下面就欢迎 compass 登场（此处应该有掌声）</p>
+<blockquote>
+<p> Compass: 谈起 javascript 你一定不会对 Angular 感到陌生（什么？别告诉我你不知道那是个啥，赶紧躲墙角去），那么，我就是 sass 世界里的那个 Angular ，我被创造出来的目标是顺畅、高效地装扮互联网，使得使用我的人可以写出可维护性更高的样式表，而今在开源社区的努力下，我有一套使用的工具，并在长期的实战中总结出了最佳实践。<br>我有三部分组成：混合器和实用工具的类库，能够集成到应用开发环境中的开发系统，以及一个用于构架框架和扩展平台。工作流程，如下图：<br><img src="http://ww4.sinaimg.cn/large/6e360ed5jw1ekh0hesmvhj20jg07h0t2.jpg" alt="compass workflow"></p>
+</blockquote>
+<p>OK，听完 Sass 和 compass 的自我独白后，你是否已经认识两位了呢？</p>
+<p>好了，学习Sass 和 compass 的第一篇就这样吧，最后奉上，sass 和 compass 的安装教程：</p>
+<p>From <a href="http://sass-lang.com/install" target="_blank" rel="external">http://sass-lang.com/install</a> <a href="http://" target="_blank" rel="external">Sass Install</a></p>
+<p>From compass-style.org <a href="http://compass-style.org/install/" target="_blank" rel="external">Compass Install</a></p>
+<p>Sass Getting Started <a href="http://sass-lang.com/guide" target="_blank" rel="external">Sass</a></p>
+<p>Compass Getting Start <a href="http://compass-style.org/help/" target="_blank" rel="external">compass</a></p>
+<p>—Eof—</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>很早的时候就听说过Sass 和 compass 了，bootstrap 2.3 发布后貌似就 compass 的 framework ，之前一直觉得手写Css 才是王道，加之工作中也渐渐的很少从零开始去书写大量的CSS，后来随着 bootstrap 3.0 的发布，貌似没有支持 Sass ，而支持了 less ，因此，又觉得不知所措，一直也没有计划去学习 Sass 和 Compass。最近处理工作中的业务时，面对纷乱的CSS代码，处理得十分闹心，一直想着要重构整个系统，但又面对如何处理CSS犯起了愁，就在这时，想起了 Sass 和 compass。</p>
+<h2 id="Sass_和_Compass_是什么">Sass 和 Compass 是什么</h2><p>诚然，Sass 和 compass 不是银弹也不是精灵粉，它不能立即帮我做好排版和布局，但是至少它能帮助我更快的实现想法并减少麻烦。那么事实真是如此么，且待我慢慢道来：</p>]]>
+    
+    </summary>
+    
+      <category term="Sass" scheme="http://blog.supertree.me/tags/Sass/"/>
+    
+      <category term="compass" scheme="http://blog.supertree.me/tags/compass/"/>
+    
+      <category term="Sass compass" scheme="http://blog.supertree.me/categories/Sass-compass/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[RAP(2)]]></title>
+    <link href="http://blog.supertree.me/2014/09/12/RAP(2)/"/>
+    <id>http://blog.supertree.me/2014/09/12/RAP(2)/</id>
+    <published>2014-09-12T14:28:25.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>上次说道项目成功导入 Eclipse ，那么这次就来说说如何使得项目成功运行起来。</p>
+<h3 id="启动ing">启动ing</h3><p>我所使用的 Eclipse 为 Luna 这个版本，本身自带 <a href="www.eclipse.org/jetty/">jetty</a>，至于 Jetty 是个啥，简单来说就是一个轻量级的 Servlet Engine and Http Server。本想既然 Eclipse 既然自带了一个容器和Server，那就拿来就用呗。结果 Ctrl+shift+R （启动），控制台里输出了一大堆看不懂的字符，寻寻觅觅最终发现一个关键的 Error (具体是啥由于跨电脑，忘记了)，想了一下，求助搜索引擎，结果却不是很满意，尝试了各种方式后，突然想到，不是还有老牌儿的 Tomcat来着么？</p>
+<p>想到就行动，一番等待后，Tomcat 部署起来了，看似一切都进行的很顺利，结果启动 Tomcat 后，控制台上又是一堆字符，呵呵。。。 头疼ing ，翻看后发现原来是数据库链接出错了，Oh,my God ! 忘记修改数据库配置文件了，RAP 这个项目里有两个数据库配置文件，local用于本地环境，remote用于开发或者预览环境。这里有一个坑，当时从 github 上 pull 下来的数据库名叫做：BosnAutoPlatformDB，结果运行 initialize.sql 创建的 database 为 rap_db，不过截至写这篇文章时，该问题已经修复。</p>
+<p>说说 mysql 初始安装时遇到的问题，因为部署环境的 mysql 版本较低，因此下载了一个新版本的 mysql ，解压后按照 install 说明安装后，由于默认没有 root 以外的用户，因此，当我使用另一台电脑链接 Mysql 时，就报出 ： “Host ‘xxx.xx.xxx.xxx’ is not allowed to connect to this MySQL server.” 错误，一开始我还以为是我的用户名和密码有问题，结果仔细一想，发现一切都是初始的啊，还是 stackoverflow 吧，一查才知道，Mysql（5.6我所用的版本），默认拒绝另一台机器使用 root 用户链接访问，而当你想要使用另一台机器链接时，你得创建一个新的用户，并给这个用户赋予特定的权限。</p>
+<p>命令：</p>
+<blockquote>
+<p>   mysql&gt; CREATE USER ‘monty’@’localhost’ IDENTIFIED BY ‘some_pass’;<br>   mysql&gt; GRANT ALL PRIVILEGES ON <em>.</em> TO ‘monty’@’localhost’<br>    -&gt;     WITH GRANT OPTION;<br>   mysql&gt; CREATE USER ‘monty’@’%’ IDENTIFIED BY ‘some_pass’;<br>   mysql&gt; GRANT ALL PRIVILEGES ON <em>.</em> TO ‘monty’@’%’<br>    -&gt;     WITH GRANT OPTION;</p>
+<p>   From: <a href="http://stackoverflow.com/questions/1559955/host-xxx-xx-xxx-xxx-is-not-allowed-to-connect-to-this-mysql-server" target="_blank" rel="external">http://stackoverflow.com/questions/1559955/host-xxx-xx-xxx-xxx-is-not-allowed-to-connect-to-this-mysql-server</a></p>
+</blockquote>
+<p>终于搞定了数据库，哈哈～启动在即，还有点儿小激动了。</p>
+<h3 id="界面">界面</h3><p>经历了上面的一番折腾，终于可以启动了。</p>
+<p>下次，将另一台电脑上的图补上，再接着往下写，其实即使启动后也遇到许多的问题。<br>（未完待续）</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>上次说道项目成功导入 Eclipse ，那么这次就来说说如何使得项目成功运行起来。</p>
+<h3 id="启动ing">启动ing</h3><p>我所使用的 Eclipse 为 Luna 这个版本，本身自带 <a href="www.eclipse.org/jetty/"]]>
+    </summary>
+    
+      <category term="RAP" scheme="http://blog.supertree.me/tags/RAP/"/>
+    
+      <category term="RAP" scheme="http://blog.supertree.me/categories/RAP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[RAP（1）]]></title>
+    <link href="http://blog.supertree.me/2014/09/09/RAP(1)/"/>
+    <id>http://blog.supertree.me/2014/09/09/RAP(1)/</id>
+    <published>2014-09-09T11:33:53.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<h3 id="什么是RAP?">什么是RAP?</h3></blockquote>
+<p>在前后端分离的开发模式下，我们通常需要定义一份接口文档来规范接口的具体信息。如一个请求的地址、有几个参数、参数名称及类型含义等等。RAP 首先方便团队录入、查看和管理这些接口文档，并通过分析结构化的文档数据，重复利用并生成自测数据、提供自测控制台等等… 大幅度提升开发效率。</p>
+<p>from <a href="https://github.com/thx/RAP" target="_blank" rel="external">https://github.com/thx/RAP</a><br><a id="more"></a></p>
+<h3 id="RAP部署记（一）">RAP部署记（一）</h3><p>工作中常常遇到这样的情况，一个需求，前后端配合着开发，其中，按照正常的开发流程，需求确定后，FE和RD的就会坐在一起，讨论前后端接口的定义和数据格式，然后一番存枪舌战后，终于有了一个双方都比较“满意”的方案了，欧耶，似乎这样就可以轻松、幸福地写码了。</p>
+<p>一开始，我也这样认为，但是渐渐地，我发现虽然接口和数据格式后端提供了，但是数据从哪儿来，按照之前的开发套路，RD会提供给我，我也就“心安理得”的等着，可是等着等着，结果却似乎朝着延期的方向发展着。呵呵。。。PM来了。（此处省略），没法，再次和RD沟通，希望他能提供模拟数据，但是事实是，RD很忙的，有很多事儿等着RD的解决，即使花费时间产出模拟数据，不仅量少，而且还会造成其它事项处理延期，呜呜。那就自己动手，丰衣足食吧，想起之前老大说过的淘宝已经产出这样的产品，还有拿来主义。</p>
+<p>然后就有此文了。</p>
+<p>首先就是部署这个服务（软件？），文档里有详细的说明，我就不多说了，我只记载一下用 Eclipse （文档中用的是 Myeclipse）部署时遇到的一些问题。</p>
+<blockquote>
+<p>部署文档 From <a href="http://thx.github.io/RAP/resources/RAP-deploy/" target="_blank" rel="external">http://thx.github.io/RAP/resources/RAP-deploy/</a></p>
+</blockquote>
+<p>首先就是 Myeclipse 项目导入 Eclipse 的问题，话说好歹大学里也学习过 Javaee ，结果打开 eclipse 时，只能表示傻眼了，一句话就是显示器上飘来三个字：看不懂。没辙，求教一下高手吧，请教了一下后端的同事，同事指点，道：“先导入 Myeclipse 项目，然后可以新建一个 eclipse 项目，然后 diff ，看看那些不同，然后按照 eclipse 项目的结构将 Myeclipse 项目的文件放入相应的目录就可。”（能有简单的办法么？没法，个人就是比较懒。。。。）</p>
+<p>听完同事的建议后，“额，先搁浅吧，还有其他重要的事儿要做。”。</p>
+<p>搁浅几天后，今天在网上找了一下资料，发现 Myeclipse 项目不用那么麻烦就可以转为 eclipse 项目，呵呵。。。</p>
+<p>解决办法:</p>
+<pre><code>1. 修改项目的.project文件，保存，不需要重启Eclipse。
+
+在
+    <span class="tag">&lt;<span class="title">natures</span>&gt;</span>
+     …
+      <span class="tag">&lt;/<span class="title">natures</span>&gt;</span>
+
+之间添加下列三行配置
+
+<span class="tag">&lt;<span class="title">nature</span>&gt;</span>org.eclipse.wst.common.project.facet.core.nature<span class="tag">&lt;/<span class="title">nature</span>&gt;</span>
+<span class="tag">&lt;<span class="title">nature</span>&gt;</span>org.eclipse.wst.common.modulecore.ModuleCoreNature<span class="tag">&lt;/<span class="title">nature</span>&gt;</span>
+<span class="tag">&lt;<span class="title">nature</span>&gt;</span>org.eclipse.jem.workbench.JavaEMFNature<span class="tag">&lt;/<span class="title">nature</span>&gt;</span>
+
+保险起见,在使用的Eclispe中创建一个新的web项目,用此空项目的.project文件覆盖导入的Web项目的.project文件
+
+2. 在Eclipse中打开“project properties"，会看到新增了很多选择项，点中"Project Facets"：
+
+勾选: dynamic web module  和 java 两个选项.
+Apply.
+
+刷新即可.
+</code></pre><p>学会了么？</p>
+<p>终于，工程的问题，被我搞定了，嚯嚯～那就来启动一发吧。结果：</p>
+<p><img src="http://ww1.sinaimg.cn/large/6e360ed5jw1ek6iltokntj21hk0u0wn7.jpg" alt="Error"></p>
+<p>可以看到，urlrewrite.xml 有错误提示，啥情况呢？eclipse 提示这个规则不符合规范，我擦，这不是该有的项都有么？IDE有毛病吧，这样想着的时候突然发现：</p>
+<p><img src="http://ww3.sinaimg.cn/large/6e360ed5jw1ek6ilil3ptj20gt0elgoj.jpg" alt=""><br><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1ek6il8fhsvj20n8095q4z.jpg" alt=""></p>
+<p>额，好吧，貌似看懂了，然后：</p>
+<p><img src="http://ww4.sinaimg.cn/large/6e360ed5jw1ek6ikndd5rj21hk0u0ait.jpg" alt=""></p>
+<p>OK了吧。哈哈～</p>
+<p>今晚就这样吧，改天再说说 eclipse 配置 tomcat server 时遇到的一些问题。</p>
+<p>—-EOF—-</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<blockquote>
+<h3 id="什么是RAP?">什么是RAP?</h3></blockquote>
+<p>在前后端分离的开发模式下，我们通常需要定义一份接口文档来规范接口的具体信息。如一个请求的地址、有几个参数、参数名称及类型含义等等。RAP 首先方便团队录入、查看和管理这些接口文档，并通过分析结构化的文档数据，重复利用并生成自测数据、提供自测控制台等等… 大幅度提升开发效率。</p>
+<p>from <a href="https://github.com/thx/RAP">https://github.com/thx/RAP</a><br>]]>
+    
+    </summary>
+    
+      <category term="RAP" scheme="http://blog.supertree.me/tags/RAP/"/>
+    
+      <category term="RAP" scheme="http://blog.supertree.me/categories/RAP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[读《重构》（一）]]></title>
+    <link href="http://blog.supertree.me/2014/08/17/%E8%AF%BB%E9%87%8D%E6%9E%84(%E4%B8%80)/"/>
+    <id>http://blog.supertree.me/2014/08/17/读重构(一)/</id>
+    <published>2014-08-17T15:24:47.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="读《重构_改善既有代码的设计》（一）">读《重构 改善既有代码的设计》（一）</h2><p>最近脑袋里充满了浆糊，其直接的结果就是码出的代码下一周就难以辨认，既不认识当初的设计也看不懂代码为何如此实现。每每想到，都觉得自己有些搞笑了，思考之余突然想到箱底有一本“圣经”，故特由此拜读系列。</p>
+<h4 id="出发">出发</h4><blockquote>
+<p>重构：重构是在不改变软件可观察行为的前提下改善其内部结构。</p>
+</blockquote>
+<p>个人理解：<strong>重构就是已一种更加友好的软件交互方式为条件而驱动产生的改善其内部结构的过程</strong>。</p>
+<p>本以为按照惯例，看完定以后接下来就是作者围绕着这个定义展开的一系列的观点叙述，但是，作者却一反常规，通过一个实例开讲全书。实例非常简单。这是一个影片出租店的程序，计算每一位顾客的消费金额并打印详单。操作者告诉程序：顾客租了那些影片、租期多长，程序便根据租赁时间和影片类型算出费用。影片分为三类：普通片、儿童片和新片。除了计算费用，还要为常客计算积分，积分会根据租片种类是否为新片而有所不同。</p>
+<p>看到这儿，觉得这个程序有些小啊，如何讲解重构的众多规则，突然有些怀疑，但是越往后研读，越发觉得自己的怀疑是很愚蠢的。</p>
+<p>首先祭出作者对于这个软件的UML设计，让我们跟随作者的脚步一起去探寻重构这场精彩的旅程。</p>
+<p><img src="http://ww2.sinaimg.cn/large/6e360ed5jw1ek6ik2zolbj20kp0aimxq.jpg" alt="image"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="读《重构_改善既有代码的设计》（一）">读《重构 改善既有代码的设计》（一）</h2><p>最近脑袋里充满了浆糊，其直接的结果就是码出的代码下一周就难以辨认，既不认识当初的设计也看不懂代码为何如此实现。每每想到，都觉得自己有些搞笑了，思考之余突然想到箱底有一本“圣]]>
+    </summary>
+    
+      <category term="重构" scheme="http://blog.supertree.me/tags/%E9%87%8D%E6%9E%84/"/>
+    
+      <category term="读重构系列" scheme="http://blog.supertree.me/categories/%E8%AF%BB%E9%87%8D%E6%9E%84%E7%B3%BB%E5%88%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[近期小结]]></title>
+    <link href="http://blog.supertree.me/2014/08/07/%E8%BF%91%E6%9C%9F%E5%B0%8F%E7%BB%93/"/>
+    <id>http://blog.supertree.me/2014/08/07/近期小结/</id>
+    <published>2014-08-07T15:24:47.000Z</published>
+    <updated>2015-06-03T13:57:09.000Z</updated>
+    <content type="html"><![CDATA[<p>最近的生活可谓凌乱不堪，工作中，生活中，与人交往中，充斥着负能量。偶尔也有呼天抢地耳的恶念，也有一种放声怒骂的悲情心态。只是，或许因为我比较淡定吧。</p>
+<p>哈哈～“一笑泯恩仇”</p>
+<p>先说工作吧，因为它是一切矛盾与冲突的开始。</p>
+<h3 id="一、一切不以理解需求为开发前提的开发过程都是耍流氓">一、一切不以理解需求为开发前提的开发过程都是耍流氓</h3><p>可能是我比较会耍流氓，所以一开始就高估自己的实力，想当然的承接着PM的需求，也是醉了，想当然的事儿都超越了PM，以至于现在细细想来后背都发凉。啥时候有如此自虐地凶残能力了？！几次需求沟通会上，都充当着围观群众的角色，还不时地点点头，动动口表示自己还在，现在想来也是比较可笑的。结果缺席需求的沟通和确认，带来的代价就是瞎开发，不仅浪费时间，更为重要的是影响了团队的声誉。</p>
+<p>骂完了自己，收拾荒凉的心，继续说说这样的挫折所带来的收获。</p>
+<p>需求的理解是第一位的，当你不明白你所开发的产品为何时，那么着急的开发只会带来深重地灾难。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>最近的生活可谓凌乱不堪，工作中，生活中，与人交往中，充斥着负能量。偶尔也有呼天抢地耳的恶念，也有一种放声怒骂的悲情心态。只是，或许因为我比较淡定吧。</p>
+<p>哈哈～“一笑泯恩仇”</p>
+<p>先说工作吧，因为它是一切矛盾与冲突的开始。</p>
+<h3 id="一、一]]>
+    </summary>
+    
+      <category term="总结" scheme="http://blog.supertree.me/tags/%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="总结" scheme="http://blog.supertree.me/categories/%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+</feed>
