@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>柱形图</title>
+        <link rel="stylesheet" href="css/bars.css" type="text/css" />
+    </head>
+    
+    <body>
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="main" style="height:400px"></div>
+        <script src="./js/esl.js"></script>
+        <script src="./js/echarts.amd.js"></script>
+        <script>
+            // 使用
+                require(
+                    [
+                        'echarts',
+                        'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+                    ],
+                    function (ec) {
+                        // 基于准备好的dom，初始化echarts图表
+                        var myChart = ec.init(document.getElementById('main')); 
+                        
+                        var option = {
+                           
+                            tooltip : {
+                                trigger: 'axis',
+                            },
+                            grid : {
+                            	x:3,
+                            	y:3,
+                            	x2:3,
+                            	y2:20,
+                            	//backgroundColor : 'rgba(255,255,255,1)',
+                            	backgroundColor : 'rgba(153,153,153,0)',
+                            	borderWidth:0
+                            },
+                            xAxis : [
+                                {
+                                    type : 'category',
+                                    axisTick: {show:false},
+                                    axisLine:{show:false,onZero:false},
+                                    //axisLabel: {margin:2,textStyle:{color:'rgba(102,102,102,1)',fontWeight:'bold'}},
+                                    axisLabel: {margin:2,textStyle:{color:'rgba(102,102,102,1)'}},
+                                    splitLine : {show : false},
+                                    splitArea: {show:false},
+                                    data : ['1','2','3','4','5','6','7',
+                                    				'8','9','10','11','12'],
+                                },
+                                {
+                                    type : 'category',
+                                    axisLine: {show:false},
+                                    axisTick: {show:false},
+                                    axisLabel: {show:false},
+                                    splitArea: {show:false},
+                                    splitLine: {show:false},
+                                    data : ['1','2','3','4','5','6','7',
+                                    				'8','9','10','11','12']
+                                }
+                            ],
+                            yAxis : [
+                        
+                                {
+                                    type : 'value',
+                                    //name : '收入',
+                                    axisLine: {show:false},
+                                    axisTick: {show:false},
+                                    axisLabel: {show:false},
+                                    splitArea: {show:false},
+                                    splitLine: {show:false},
+                                }
+                            ],
+                            series : [
+                                {
+                                    name:'收入',
+                                    type:'bar',
+                                    barCategoryGap:'50%',
+                                    //itemStyle: {normal: {color:'rgba(204,204,204,1)'}},
+                                    itemStyle: {
+                                        normal: {
+                                            color: 'rgba(102,102,102,1)',
+                                            barBorderColor: 'rgba(102,102,102,1)',
+                                            barBorderWidth: 6,
+                                            barBorderRadius:0,
+                                            //label : {
+                                            //    show: true, position: 'insideTop'
+                                            //}
+                                        }
+                                      },
+                                    //itemStyle: {normal: {color:'rgba(51,102,255,0.75)'}},
+                                    //itemStyle: {normal: {color:'rgba(193,35,43,1)', label:{show:true}}},
+                                    data:[12330000, 15000000, 15500000, 30000000, 37000000, 36000000, 41000000, 41200000],
+                                },
+                                {
+                                    name:'bg',
+                                    type:'bar',
+                                    tooltip : {show:false},
+                                    xAxisIndex:1,
+                                    itemStyle: {
+                                        normal: {
+                                            color: 'rgba(255,255,255,1)',
+                                            barBorderColor: 'rgba(255,255,255,1)',
+                                            barBorderWidth: 6,
+                                            barBorderRadius:0,
+                                            //label : {
+                                            //    show: true, position: 'insideTop'
+                                            //}
+                                        }
+                                      },      
+                                    barCategoryGap:'50%',
+                                    //itemStyle: {normal: {color:'rgba(255,255,255,1)'}},
+                                    //itemStyle: {normal: {color:'rgba(51,102,255,0.25)'}},
+                                    data:[45000000,45000000,45000000,45000000,45000000,45000000,45000000,45000000,45000000,45000000,45000000,45000000]
+                                }
+                            ]
+                        };
+                
+                        // 为echarts对象加载数据 
+                        myChart.setOption(option); 
+                    }
+                );
+        </script>
+    </body>
+
+</html>

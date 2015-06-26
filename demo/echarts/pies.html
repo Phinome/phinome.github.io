@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>圆饼图</title>
+	<link rel="stylesheet" href="css/pies.css" type="text/css" />
+</head>
+<body>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="main" style="height:400px"></div>
+        <script src="./js/esl.js"></script>
+        <script src="./js/echarts.amd.js"></script>
+        <script>
+            // 使用
+                require(
+                    [
+                        'echarts',
+                        'echarts/chart/pie' // 使用柱状图就加载bar模块，按需加载
+                    ],
+                    function (ec) {
+                        // 基于准备好的dom，初始化echarts图表
+                        var myChart = ec.init(document.getElementById('main'),'macarons'); 
+                        
+                        var option = {
+                           
+                            tooltip : {
+                                trigger: 'item',
+								formatter: '{a} <br /> {b}: {c} ({d}%)'
+                            },
+                            legend: {
+						        //orient : 'vertical',
+						        x : 'center',
+						        y: 'top',
+						        data:['龙渊','扶翼','龙渊pc','龙渊移动','扶翼pc','扶翼移动']
+						    },
+						    toolbox: {
+						        show : true,
+						        x : 'center',
+						        y : 'bottom',
+						        feature : {
+						            restore : {show: true},
+						            saveAsImage : {show: true}
+						        }
+						    },
+						    calculable : true,
+						    series : [
+						        {
+						            name:'收入结构',
+						            type:'pie',
+						            selectedMode: 'single',
+						            radius : [0, 40],
+						            
+						            // for funnel
+						            x: '20%',
+						            width: '40%',
+						            funnelAlign: 'right',
+						            max: 1548,
+						            
+						            itemStyle : {
+						                normal : {
+						                    label : {
+						                        position : 'inner'
+						                    },
+						                    labelLine : {
+						                        show : false
+						                    }
+						                }
+						            },
+						            data:[
+						                {value:335, name:'龙渊'},
+						                {value:1548, name:'扶翼'}
+						            ]
+						        },
+						        {
+						            name:'收入结构',
+						            type:'pie',
+						            radius : [60, 100],
+						            
+						            // for funnel
+						            x: '60%',
+						            width: '35%',
+						            funnelAlign: 'left',
+						            max: 1048,
+						            
+						            itemStyle : {
+						                normal : {
+						                    label : {
+						                        position : 'inner'
+						                    },
+						                    labelLine : {
+						                        show : false,
+						                        length : 'auto'
+						                    }
+						                }
+						            },
+						            data:[
+						                {value:335, name:'龙渊pc'},
+						                {value:310, name:'龙渊移动'},
+						                {value:234, name:'扶翼pc'},
+						                {value:135, name:'扶翼移动'}
+						            ]
+						        },
+								{
+						            name:'收入结构',
+						            type:'pie',
+						            radius : [120, 160],
+						            
+						            // for funnel
+						            x: '60%',
+						            width: '35%',
+						            funnelAlign: 'left',
+						            max: 2048,
+						            
+						            itemStyle : {
+						                normal : {
+						                    label : {
+						                        position : 'inner'
+						                    },
+						                    labelLine : {
+						                        show : false,
+						                        length : 'auto'
+						                    }
+						                }
+						            },
+						            data:[
+						                {value:145, name:'龙渊pc'},
+						                {value:530, name:'龙渊移动'},
+						                {value:104, name:'扶翼pc'},
+						                {value:245, name:'扶翼移动'}
+						            ]
+						        }
+						    ]
+                        };
+                
+                        // 为echarts对象加载数据 
+                        myChart.setOption(option); 
+                    }
+                );
+        </script>
+</body>
+</html>

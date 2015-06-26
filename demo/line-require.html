@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>折线图</title>
+		<!--<link rel="stylesheet" href="css/line.css" type="text/css" />-->
+	</head>
+	<body>
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		<div id="main" style="height:400px"></div>
+<!--		<script src="./js/esl.js"></script>-->
+<!--		<script src="./js/echarts.amd.js"></script>-->
+	<script src="http://cdn.bootcss.com/require.js/2.1.17/require.js" data-main="./js/data-line.js"></script>
+	<script>
+		require.config({
+			paths: {
+				echarts: 'echarts.amd'
+			}
+		});
+	</script>
+	</body>
+
+</html>

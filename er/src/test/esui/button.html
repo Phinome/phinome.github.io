@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>[ESUI EXAMPLE] - Button</title>
+
+<link rel="stylesheet" href="page.css" type="text/css" />
+<!--<link rel="stylesheet" href="../../src/esui/css/ui-button.css" type="text/css" />
+<link rel="stylesheet" href="../../release/esui-2.1.2.css.css" type="text/css" />-->
+<link rel="stylesheet" href="../../src/esui/css/normalize.css" type="text/css" />
+<link rel="stylesheet" href="../../src/esui/css/ui-est-button.css" type="text/css" />
+<script type="text/javascript" src="../../tool/tangram-1.3.9.js"></script>
+     <script type="text/javascript" src="../../release/esui-2.1.2.js"></script>
+</head>
+
+<body>
+<div class="header">[ESUI EXAMPLE] - Button</div>
+<div class="main">
+	<table cellpadding="5" cellspacing="0" border="0">
+		<tr>
+			<td>默认</td>
+			<td><button type="button" ui="type:Button;id:myBtn;">请按我</button></td>
+		</tr>
+		<tr>
+			<td>Primary</td>
+			<td><button type="button" ui="type:Button;id:myBtn2;skin:primary">请按我</button></td>
+		</tr>
+		<tr>
+			<td>Success</td>
+			<td><button ui="type:Button;id:myBtn3;skin:success">请按我</button></td>
+		</tr>
+		<tr>
+			<td>Info</td>
+			<td><div ui="type:Button;id:myBtn4;skin:info">请按我</div></td>
+		</tr>
+        <tr>
+			<td>Warning</td>
+			<td><button ui="type:Button;id:myBtn5;skin:warning">请按我</button></td>
+		</tr>
+        <tr>
+			<td>Danger</td>
+			<td><button ui="type:Button;id:myBtn6;skin:danger">请按我</button></td>
+		</tr>
+		<tr>
+			<td>Disabled</td>
+			<td><button ui="type:Button;id:myBtn6;disabled:1">请按我</button></td>
+		</tr>
+		<tr>
+			<td>Icon</td>
+			<td>
+				<div ui="type:Button;id:myBtn7;skin:primary"><span class="ui-icon-user"></span> Icon</div>
+			</td>
+		</tr>
+		<tr>
+			<td>X-Small</td>
+			<td>
+				<div ui="type:Button;id:myBtn8;" class="ui-small">x-small</div>
+			</td>
+		</tr>
+<!--        <tr>
+			<td>Link</td>
+      <td>
+        <form>
+          <input type="submit" ui="type:Button;id:myBtn7;" value="请按我"/>
+        </form>
+      </td>
+		</tr>-->
+	</table>
+	</table>
+</div>
+
+<script>
+esui.util.init();
+esui.get( 'myBtn' ).onclick = 
+esui.get( 'myBtn2' ).onclick = 
+esui.get( 'myBtn3' ).onclick = 
+esui.get( 'myBtn4' ).onclick = 
+esui.get( 'myBtn5' ).onclick = function () {
+	alert( '我是按钮：' + this.id );
+};
+//esui.get( 'myBtn6' ).setDisabled(true);
+//esui.get( 'myBtn7' ).onclick = function() {
+//  return false;
+//}
+</script>
+</body>
+</html>

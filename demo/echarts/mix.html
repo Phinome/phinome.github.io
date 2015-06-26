@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>双轴线</title>
+	<link rel="stylesheet" href="css/mix.css" type="text/css" />
+</head>
+<body>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		<div id="main" style="height:400px"></div>
+		<script src="./js/esl.js"></script>
+		<script src="./js/echarts.amd.js"></script>
+		<script>
+			// 使用
+			                
+			        // 路径配置
+			        require.config({
+			            paths: {
+			                echarts: 'echarts/build/dist'
+			            }
+			        });
+			        
+			        // 使用
+			        require(
+			            [
+			                'echarts',
+			                'echarts/chart/line'
+			            ],
+			            function (ec) {
+			                // 基于准备好的dom，初始化echarts图表
+			                var mychart = ec.init(document.getElementById('main'),'macarons'); 
+			                var option = {
+							    title : {
+                                    text: '整体',
+                                    textStyle :{fontSize:14}
+                                },
+                                tooltip : {
+                                    trigger: 'axis'
+                                },
+                                legend: {
+                                    data:['日均消耗','CTR']
+                                },
+                                grid : {
+                                	x:70,
+                                	y:60,
+                                	x2:60,
+                                	y2:80,
+                                	backgroundColor : 'rgba(255,255,255,1)',
+                                	borderWidth:0
+                                },
+                                xAxis : [
+                                    {
+                                        type : 'category',
+                                        boundaryGap : false,
+                                        splitArea : {show : false},
+                                        splitLine : {show : false},
+                                        axisTick:{interval:1},
+                                        axisLabel:{interval:1,rotate:15},
+                                        data : ['03.23-03.29','03.30-04.05','04.06-04.12','04.13-04.19','04.20-04.26','04.27-05.03','05.04-05.10',
+                                        				'05.11-05.17','05.18-05.24','05.25-05.31','06.01-06.07','06.08-06.14','06.15-06.23']
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        type : 'value',
+                                        name:'消耗',
+                                        scale : true,
+                                        splitLine : {show : true},
+                                        splitArea : {show : false},
+                                        axisLabel : {
+                                            formatter: '{value} w'
+                                        }
+                                    },
+                                    {
+                                        type : 'value',
+                                        name : 'CTR',
+                                        scale : true,
+                                        splitArea : {show : false},
+                                        axisLabel : {
+                                            formatter: '{value} ‰'
+                                        }
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'日均消耗',
+                                        type:'line',
+                                        data:[267, 300, 234, 643, 345, 373, 423, 392, 462, 321, 351, 512,334,234,442],
+                                    },
+                                    {
+                                        name:'CTR',
+                                        type:'line',
+                                        yAxisIndex: 1,
+                                        data:[0.35, 0.37, 0.36, 0.33, 0.38, 0.40, 0.40, 0.39, 0.37, 0.41, 0.38, 0.35, 0.36, 0.37, 0.38],
+                                    }
+                                ]
+							};
+							                    
+			                // 为echarts对象加载数据 
+			                mychart.setOption(option); 
+                            console.log(mychart.getOption());
+			            }
+			        );
+		</script>
+</body>
+</html>
