@@ -107,7 +107,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/2014/" style="font-size: 10px;">2014</a> <a href="/tags/Object-c/" style="font-size: 10px;">Object-c</a> <a href="/tags/Promise/" style="font-size: 20px;">Promise</a> <a href="/tags/RAP/" style="font-size: 20px;">RAP</a> <a href="/tags/Sass/" style="font-size: 10px;">Sass</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/compass/" style="font-size: 10px;">compass</a> <a href="/tags/deferred/" style="font-size: 10px;">deferred</a> <a href="/tags/devTools/" style="font-size: 10px;">devTools</a> <a href="/tags/echarts/" style="font-size: 10px;">echarts</a> <a href="/tags/es6/" style="font-size: 20px;">es6</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/个人小结/" style="font-size: 10px;">个人小结</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感悟/" style="font-size: 20px;">感悟</a> <a href="/tags/漫谈/" style="font-size: 10px;">漫谈</a> <a href="/tags/生活/" style="font-size: 10px;">生活</a> <a href="/tags/程序人生/" style="font-size: 10px;">程序人生</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/项目总结/" style="font-size: 10px;">项目总结</a>
+						<a href="/tags/2014/" style="font-size: 10px;">2014</a> <a href="/tags/Object-c/" style="font-size: 10px;">Object-c</a> <a href="/tags/Promise/" style="font-size: 20px;">Promise</a> <a href="/tags/Promise-A/" style="font-size: 10px;">Promise/A+</a> <a href="/tags/RAP/" style="font-size: 15px;">RAP</a> <a href="/tags/Sass/" style="font-size: 10px;">Sass</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/compass/" style="font-size: 10px;">compass</a> <a href="/tags/deferred/" style="font-size: 10px;">deferred</a> <a href="/tags/devTools/" style="font-size: 10px;">devTools</a> <a href="/tags/echarts/" style="font-size: 10px;">echarts</a> <a href="/tags/es6/" style="font-size: 20px;">es6</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/个人小结/" style="font-size: 10px;">个人小结</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感悟/" style="font-size: 15px;">感悟</a> <a href="/tags/漫谈/" style="font-size: 10px;">漫谈</a> <a href="/tags/生活/" style="font-size: 10px;">生活</a> <a href="/tags/程序人生/" style="font-size: 10px;">程序人生</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/项目总结/" style="font-size: 10px;">项目总结</a>
 					</div>
 				</section>
 				
@@ -170,6 +170,82 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-初识Promise" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/12/14/初识Promise/" class="article-date">
+  	<time datetime="2014-12-14T15:51:06.000Z" itemprop="datePublished">Dec 14 2014</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/12/14/初识Promise/">初识Promise</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="初识Promise">初识Promise</h1><h3 id="为啥要用Promise？">为啥要用Promise？</h3><p>考虑一个栗子：读取一个文件，然后将内容解析为 JSON。Javascript 代码如下：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSONSync</span>(<span class="params">filename</span>) </span>{
+      <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(fs.readFileSync(filename, <span class="string">'utf8'</span>));
+}
+</code></pre><p>上面这段代码中，由于读取文件采用的是同步的方式，将会阻塞其他的操作，直到文件读取完毕，而现实中，我们显然不希望是这样的结果，因此，通常我们都采取异步地方式：</p>
+<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span><span class="params">(filename, callback)</span></span>{
+      fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err, res)</span></span>{
+        <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="keyword">callback</span>(err);
+        <span class="keyword">callback</span>(<span class="literal">null</span>, JSON.parse(res));
+      });
+}
+</code></pre><p>上面这段代码，咋一看似乎一切都很完美，通过异步调用IO完美解决了阻塞的问题，然而，细细思考却发现：</p>
+<p>1.参数中的 callback ，这货到底是输入的参数还是返回的值呢？</p>
+<p>2.原有的控制流程不再起作用了；</p>
+<p>3.JSON.parse 没有抛出错误；</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Promise/">Promise</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es6/">es6</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Promise/">Promise</a><a class="article-category-link" href="/categories/Promise/es6/">es6</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2014/12/14/初识Promise/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-chrome-devTools-notes" class="article article-type-post" itemscope itemprop="blogPost">
   

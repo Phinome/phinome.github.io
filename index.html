@@ -107,7 +107,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/2014/" style="font-size: 10px;">2014</a> <a href="/tags/Object-c/" style="font-size: 10px;">Object-c</a> <a href="/tags/Promise/" style="font-size: 20px;">Promise</a> <a href="/tags/RAP/" style="font-size: 20px;">RAP</a> <a href="/tags/Sass/" style="font-size: 10px;">Sass</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/compass/" style="font-size: 10px;">compass</a> <a href="/tags/deferred/" style="font-size: 10px;">deferred</a> <a href="/tags/devTools/" style="font-size: 10px;">devTools</a> <a href="/tags/echarts/" style="font-size: 10px;">echarts</a> <a href="/tags/es6/" style="font-size: 20px;">es6</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/个人小结/" style="font-size: 10px;">个人小结</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感悟/" style="font-size: 20px;">感悟</a> <a href="/tags/漫谈/" style="font-size: 10px;">漫谈</a> <a href="/tags/生活/" style="font-size: 10px;">生活</a> <a href="/tags/程序人生/" style="font-size: 10px;">程序人生</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/项目总结/" style="font-size: 10px;">项目总结</a>
+						<a href="/tags/2014/" style="font-size: 10px;">2014</a> <a href="/tags/Object-c/" style="font-size: 10px;">Object-c</a> <a href="/tags/Promise/" style="font-size: 20px;">Promise</a> <a href="/tags/Promise-A/" style="font-size: 10px;">Promise/A+</a> <a href="/tags/RAP/" style="font-size: 15px;">RAP</a> <a href="/tags/Sass/" style="font-size: 10px;">Sass</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/compass/" style="font-size: 10px;">compass</a> <a href="/tags/deferred/" style="font-size: 10px;">deferred</a> <a href="/tags/devTools/" style="font-size: 10px;">devTools</a> <a href="/tags/echarts/" style="font-size: 10px;">echarts</a> <a href="/tags/es6/" style="font-size: 20px;">es6</a> <a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/个人小结/" style="font-size: 10px;">个人小结</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/感悟/" style="font-size: 15px;">感悟</a> <a href="/tags/漫谈/" style="font-size: 10px;">漫谈</a> <a href="/tags/生活/" style="font-size: 10px;">生活</a> <a href="/tags/程序人生/" style="font-size: 10px;">程序人生</a> <a href="/tags/重构/" style="font-size: 10px;">重构</a> <a href="/tags/项目总结/" style="font-size: 10px;">项目总结</a>
 					</div>
 				</section>
 				
@@ -170,6 +170,139 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-es6-promise" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/08/17/es6-promise/" class="article-date">
+  	<time datetime="2015-08-17T14:08:27.000Z" itemprop="datePublished">Aug 17 2015</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/17/es6-promise/">es6-promise</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上周在小团队内部分享了一下阅读ES6中Promise迷你书后的收获。后来忙着做项目，另外也是没有写作思路，因此也就没有没有及时总结，今天蹭着写作的这点动力，赶紧写点文字。</p>
+<p>说到 Promise 首先反应的其实是 Deferred ，因为这个概念在 jQuery 1.5+ 就引入了。而那时候其实 Ecmascript 社区里还没有 Promise 啥事儿，至少不像现在这般受到重视。至于后来为啥广泛被认可，乃至今日成为规范，这个我没有详细去考究。</p>
+<p>自从异步编程在 javascript 中火热起来，在给我们带来异步编程乐趣的同时也伴随着回调嵌套过深，不能捕获异步错误和返回值的问题，不仅使得异步代码写的难看，更为重要的是给维护者和debug带来了灾难。技术的发展就是这样，当一种技术遇到自身的瓶颈时，人们就会寻找或者发明另一种技术来弥补或取代。So, Promise 就是这种角色。</p>
+<p>ES6 参照了 <a href="https://promisesaplus.com/" target="_blank" rel="external">Promises/A+</a> 规范对 Promise 的实现做出了规范，而本文的内容也就围绕着 ES6 中的 Promise 展开。</p>
+<p>提到 Promise 就不得不首先说说 Promise 里的三种状态：</p>
+<ul>
+<li>Pending</li>
+<li>Fulfilled</li>
+<li>Rejected</li>
+</ul>
+<p>关于这三种状态的定义规范里有详细的定义，我就偷个懒：</p>
+<blockquote>
+<p>Any Promise object is in one of three mutually exclusive states: fulfilled, rejected, and pending:</p>
+<ul>
+<li>A promise p is fulfilled if p.then(f, r) will immediately enqueue a Job to call the function f.</li>
+<li>A promise p is rejected if p.then(f, r) will immediately enqueue a Job to call the function r.</li>
+<li>A promise is pending if it is neither fulfilled nor rejected.</li>
+</ul>
+<p>A promise is said to be settled if it is not pending, i.e. if it is either fulfilled or rejected.</p>
+</blockquote>
+<p>关于状态有一个很关键的词就是：不可逆。当 <code>Promise</code> 对象由 <code>pending</code> 转换到 <code>fulfilled</code> 或者 <code>rejected</code> 状态后，便不能再发生逆转换，即由：<code>fulfilled</code> ==&gt; <code>pending</code> 或者 <code>rejected</code> ==&gt; <code>pending</code>。而当状态不处于 <code>pending</code> 时，我们可以说 <code>promise</code> 对象是<code>settled</code>的。</p>
+<p>OK，说完状态，来接着说说 Promise 对象的 API 。规范中定义了三种API。即：</p>
+<ul>
+<li>Constructor Method</li>
+<li>Instance Method</li>
+<li>Static Method</li>
+</ul>
+<p>首先来看看 <code>Constructor Method</code> :</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(executor);</span><br></pre></td></tr></table></figure>
+<p>这里有个引起重视的地方是，<code>executor</code> 必须是 <em>callable</em> 也就是说必须是个 <code>Function</code> 。否则，浏览器会抛出错误。</p>
+<p>废话不多说了，直接上ES6规范：</p>
+<blockquote>
+<p>When the Promise function is called with argument executor the following steps are taken:</p>
+<ol>
+<li>If NewTarget is <code>undefined</code>, throw a <code>TypeError exception</code>.</li>
+<li><p>If <code>IsCallable(executor)</code> is false, throw a <code>TypeError exception</code>.</p>
+<p> 此处省略若干字…</p>
+</li>
+</ol>
+<p>11.Return promise.</p>
+<p>NOTE: </p>
+<p>The <code>executor</code> argument must be a function object. It is called for initiating and reporting completion of the possibly deferred action represented by this Promise object. The executor is called with two arguments: resolve and reject. These are functions that may be used by the executor function to report eventual completion or failure of the deferred computation. Returning from the executor function does not mean that the deferred action has been completed but only that the request to eventually perform the deferred action has been accepted.</p>
+</blockquote>
+<p>看完规范，记住就好了，初始化一个 <code>Promise</code> 对象时记得传个 <code>Function</code> 进去。</p>
+<p>其次，来说说 <code>Instance Method</code>:</p>
+<ul>
+<li>then</li>
+</ul>
+<p><code>Promise</code> 对象的实例就只有一个方法，接收两个参数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;);</span><br><span class="line">p.then(onFulfilled , onRejected) &#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ol>
+<li><code>&#39;Function&#39; === typeof (onFulfilled &amp;&amp; onRejected)</code> ，那么 <code>p.then</code> 返回一个新的 <code>promise</code>。</li>
+<li>当<code>onFulfilled</code>不是函数且<code>onRejected</code>未定义的时候，此时有一个<code>Promise穿透</code>的概念。即：当前的 <code>then</code> 不会处理<code>Promise</code> 而会直接传递给下一个。</li>
+<li>当<code>onFulfilled</code>不是函数且<code>onRejected</code>为函数的时候，此时就只定义了<code>Recjeted</code>时的处理，其实也就相当于 <code>catch</code> 方法。</li>
+</ol>
+<p>最后来聊聊<code>Static Method</code>方法：</p>
+<ul>
+<li>Promise.resolve()</li>
+<li>Promise.reject()</li>
+<li>Promise.all([promise], function(res) {})</li>
+<li>Promise.race([promise], function(res) {})</li>
+</ul>
+<p><code>Promise.resolve</code> 和 <code>Promise.resolve</code> 可以看作是 <code>new Promise(function(resolve) {})</code> 或者 <code>new Promise(function(undefined, reject) {})</code> 的快捷方式（语法糖？）。这里主要讲讲 <code>Promise.all</code>，<code>Promise.race</code> 的用法以及区别。先上代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.all</span><br><span class="line"></span><br><span class="line"><span class="comment">// `delay`毫秒后执行resolve</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">timerPromisefy</span>(<span class="params">delay</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            resolve(delay);</span><br><span class="line">        &#125;, delay);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> startDate = <span class="built_in">Date</span>.now();</span><br><span class="line"><span class="comment">// 所有promise变为resolve后程序退出</span></span><br><span class="line"><span class="built_in">Promise</span>.all([</span><br><span class="line">    timerPromisefy(<span class="number">1</span>),</span><br><span class="line">    timerPromisefy(<span class="number">32</span>),</span><br><span class="line">    timerPromisefy(<span class="number">64</span>),</span><br><span class="line">    timerPromisefy(<span class="number">128</span>)</span><br><span class="line">]).then(<span class="function"><span class="keyword">function</span> (<span class="params">values</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">Date</span>.now() - startDate + <span class="string">'ms'</span>);</span><br><span class="line">    <span class="comment">// 約128ms</span></span><br><span class="line">    <span class="built_in">console</span>.log(values);    <span class="comment">// [1,32,64,128]</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.race</span><br><span class="line"></span><br><span class="line"><span class="comment">// `delay`毫秒后执行resolve</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">timerPromisefy</span>(<span class="params">delay</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            resolve(delay);</span><br><span class="line">        &#125;, delay);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 任何一个promise变为resolve或reject 的话程序就停止运行</span></span><br><span class="line"><span class="built_in">Promise</span>.race([</span><br><span class="line">    timerPromisefy(<span class="number">1</span>),</span><br><span class="line">    timerPromisefy(<span class="number">32</span>),</span><br><span class="line">    timerPromisefy(<span class="number">64</span>),</span><br><span class="line">    timerPromisefy(<span class="number">128</span>)</span><br><span class="line">]).then(<span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(value);    <span class="comment">// =&gt; 1</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>看代码就能清晰吧，我就不多说了。</p>
+<p>灵感榨干了，今天就先这样。</p>
+<p>最后附上分享的PPT(PDF)版了，Keynote 暂时不传。</p>
+<p><a href="http://vdisk.weibo.com/s/d2Q1GY4DKjq5" target="_blank" rel="external">ES6-Promise</a></p>
+<p>参考网址：</p>
+<ul>
+<li><a href="http://www.ecma-international.org/ecma-262/6.0/" target="_blank" rel="external">es6 specs</a></li>
+<li><a href="https://promisesaplus.com/" target="_blank" rel="external">Promises/A+</a></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Promise/">Promise</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Promise-A/">Promise/A+</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es6/">es6</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Promise/">Promise</a><a class="article-category-link" href="/categories/Promise/es6/">es6</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-项目总结（一）" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -897,82 +1030,6 @@
       
         <p class="article-more-link">
           <a  href="/2014/12/17/More-about-Promise/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-初识Promise" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2014/12/14/初识Promise/" class="article-date">
-  	<time datetime="2014-12-14T15:51:06.000Z" itemprop="datePublished">Dec 14 2014</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/12/14/初识Promise/">初识Promise</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="初识Promise">初识Promise</h1><h3 id="为啥要用Promise？">为啥要用Promise？</h3><p>考虑一个栗子：读取一个文件，然后将内容解析为 JSON。Javascript 代码如下：</p>
-<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSONSync</span>(<span class="params">filename</span>) </span>{
-      <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(fs.readFileSync(filename, <span class="string">'utf8'</span>));
-}
-</code></pre><p>上面这段代码中，由于读取文件采用的是同步的方式，将会阻塞其他的操作，直到文件读取完毕，而现实中，我们显然不希望是这样的结果，因此，通常我们都采取异步地方式：</p>
-<pre><code><span class="function"><span class="keyword">function</span> <span class="title">readJSON</span><span class="params">(filename, callback)</span></span>{
-      fs.readFile(filename, <span class="string">'utf8'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err, res)</span></span>{
-        <span class="keyword">if</span> (err) <span class="keyword">return</span> <span class="keyword">callback</span>(err);
-        <span class="keyword">callback</span>(<span class="literal">null</span>, JSON.parse(res));
-      });
-}
-</code></pre><p>上面这段代码，咋一看似乎一切都很完美，通过异步调用IO完美解决了阻塞的问题，然而，细细思考却发现：</p>
-<p>1.参数中的 callback ，这货到底是输入的参数还是返回的值呢？</p>
-<p>2.原有的控制流程不再起作用了；</p>
-<p>3.JSON.parse 没有抛出错误；</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Promise/">Promise</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es6/">es6</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Promise/">Promise</a><a class="article-category-link" href="/categories/Promise/es6/">es6</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/2014/12/14/初识Promise/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
